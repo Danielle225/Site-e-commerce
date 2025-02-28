@@ -5,7 +5,7 @@ class Product(models.Model):
     name = models.CharField(max_length=255)
     price = models.FloatField()
     description = models.TextField()
-    image_url = models.CharField(max_length=2083)
+    image_url = models.URLField(max_length=2083)
     category = models.ForeignKey('category', on_delete=models.CASCADE,related_name='products')
     date = models.DateTimeField(auto_now_add=True)
     

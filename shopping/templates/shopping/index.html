@@ -1,0 +1,76 @@
+{% extends "shopping/navbar.html" %}
+
+{% block content %}
+<div class='row'>
+    <div class='col-md-12'>
+        <form class="mx-auto mt-2 p-4" method="GET" action="{% url 'home' %}">
+            <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Recherche</label>
+            <div class="relative">
+                <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                    <svg class="w-4 h-4 text-gray-500 dark:text-gray-400 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                    </svg>
+                </div>
+                <input type="search" id="default-search" name="name" class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Recherche categorie,produits" required />
+                <button type="submit" class="text-white absolute end-2.5 bottom-2.5 m-2 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Recherche</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="container mx-auto px-4 py-8">
+    <h2 class="text-2xl font-bold tracking-tight text-gray-900 mb-6">Nos Produits</h2>
+    <div class="flex flex-wrap -mx-4 snap-x justify-between">
+        {% for product in products %}
+        <div class="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition m-4">
+            <img src="{{ product.image_url }}" alt="{{ product.name }}" class="max-w-xs h-auto object-cover object-center mb-4 rounded-lg" />
+            <div class="mt-4">
+                <h3 class="text-sm font-semibold text-gray-800">
+                    <a href="#">
+                        {{ product.name }}
+                    </a>
+                </h3>
+                <p class="text-sm text-gray-500">{{ product.description }}</p>
+                <p class="text-sm font-medium text-gray-900 mt-1">{{ product.price }} FCFA</p>
+            </div>
+            <div class="mt-4 flex space-x-2">
+                <a href="{{product.pk}}" class="text-center bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md text-sm font-medium">
+                    Voir Détails
+                </a>
+                <button class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-md text-sm font-medium">
+                    Ajouter au Panier
+                </button>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Pagination -->
+<div class="flex justify-center mt-6">
+    <ul class="pagination flex space-x-2">
+        {% if products.has_previous %}
+            <li>
+                <a class="bg-gray-300 hover:bg-gray-400 text-gray-700 px-3 py-1 rounded" href="?page=1">Premier</a>
+            </li>
+            <li>
+                <a class="bg-gray-300 hover:bg-gray-400 text-gray-700 px-3 py-1 rounded" href="?page={{ products.previous_page_number }}">Précédent</a>
+            </li>
+        {% endif %}
+
+        <li class="bg-blue-500 text-white px-3 py-1 rounded">
+            Page {{ products.number }} sur {{ products.paginator.num_pages }}
+        </li>
+
+        {% if products.has_next %}
+            <li>
+                <a class="bg-gray-300 hover:bg-gray-400 text-gray-700 px-3 py-1 rounded" href="?page={{ products.next_page_number }}">Suivant</a>
+            </li>
+            <li>
+                <a class="bg-gray-300 hover:bg-gray-400 text-gray-700 px-3 py-1 rounded" href="?page={{ products.paginator.num_pages }}">Dernier</a>
+            </li>
+        {% endif %}
+    </ul>
+</div>
+
+{% endblock %}
