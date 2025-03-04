@@ -1,38 +1,59 @@
 {% extends "shopping/navbar.html" %}
     
 {% block content %}
-<div class=" min-h-screen p-6">
-    <div class="container mx-auto px-6 py-10 lg:px-20">
-        <div class="flex flex-wrap -mx-4">
-            <!-- Product Images -->
-            <div class="w-400 md:w-1/2 px-4 mb-8">
-                <div class="relative group overflow-hidden rounded-lg shadow-lg">
-                    <img src="{{product.image_url}}" alt="{{product.name}}"
-                         class="w-400 h-auto rounded-lg transition-transform duration-300 group-hover:scale-105">
+<div class="bg-white min-h-screen">
+    <div class="max-w-6xl mx-auto px-4 py-8">
+        <!-- Product Section -->
+        <div class="flex flex-col md:flex-row gap-6">
+            <!-- Left Column - Product Image -->
+            <div class="md:w-2/5">
+                <div class="border border-gray-200 rounded overflow-hidden">
+                    <img src="{{product.image_url}}" alt="name" 
+                         class="w-full h-auto object-contain">
                 </div>
             </div>
-      
-            <!-- Product Details -->
-            <div class="w-400 md:w-1/2 px-4 p-4">
-                <h2 class="text-4xl font-extrabold text-gray-900 mb-3">{{product.name}}</h2>
-
-                <div class="flex items-center mb-4">
-                    <span class="text-3xl font-bold text-indigo-600">{{product.price}} FCFA</span>
+            
+            <!-- Right Column - Product Info -->
+            <div class="md:w-3/5">
+                <h1 class="text-xl font-medium text-gray-900 mb-1">{{product.name}}</h1>
+                
+                <div class="mb-4 border-b border-gray-200 pb-4">
+                    <span class="text-sm text-gray-500">{{product.description}}</span>
                 </div>
-
-                <p class="text-gray-700 leading-relaxed mb-6">
-                    {{product.description}}
-                </p>
-
-                <div class="flex space-x-4 mb-6">
-                    <button class="bg-indigo-600 flex gap-2 items-center text-white px-6 py-3 rounded-lg 
-                                  shadow-lg hover:bg-indigo-700 transition-transform transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                             stroke-width="1.5" stroke="currentColor" class="size-6">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                  d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
+                
+                <div class="mb-2">
+                    <span class="text-xl font-medium text-gray-900">{{product.price}} FCFA</span>
+                </div>
+                
+                <div class="mb-6">
+                    <div class="flex items-center text-sm text-green-600 mb-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
                         </svg>
+                        <span>En stock</span>
+                    </div>
+                    <div class="text-sm text-gray-700">Livraison disponible</div>
+                </div>
+                
+                <!-- Add to Cart Section -->
+                <div class="border border-gray-200 rounded-lg p-4 bg-gray-50 mb-4">
+                    <div class="mb-3">
+                        <label for="quantity" class="block text-sm font-medium text-gray-700 mb-1">Quantité</label>
+                        <select id="quantity" class="border border-gray-300 rounded-md py-1 px-2 w-16 focus:ring-indigo-500 focus:border-indigo-500">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                        </select>
+                    </div>
+                    
+                    <button class="w-full bg-yellow-400 hover:bg-yellow-500 text-sm py-2 px-4 rounded-full font-medium focus:outline-none focus:ring-2 focus:ring-yellow-300 mb-2">
                         Ajouter au panier
+                    </button>
+                    
+                    <button class="w-full bg-orange-400 hover:bg-orange-500 text-sm py-2 px-4 rounded-full font-medium focus:outline-none focus:ring-2 focus:ring-orange-300">
+                        Acheter maintenant
                     </button>
                 </div>
             </div>
