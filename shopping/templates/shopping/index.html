@@ -37,7 +37,7 @@
                 <a href="{{product.pk}}" class="text-center bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md text-sm font-medium">
                     Voir Détails
                 </a>
-                <button class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-md text-sm font-medium">
+                <button id="{{product.pk}}"  data-name="{{product.name}}" data-price={{product.price}} class=" ted bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-md text-sm font-medium">
                     Ajouter au Panier
                 </button>
             </div>
@@ -74,3 +74,129 @@
 </div>
 
 {% endblock %}
+{%block js%}
+<script type="text/javascript">
+    console.log('juste pour tester');
+    if(localStorage.getItem('panier')== null){
+        var panier = {};
+    }else{
+        panier = JSON.parse(localStorage.getItem('panier'));
+    }
+    $(document).on('click','.ted',function(){
+        console.log('ajouter');
+        var item_id = this.id.toString();
+        console.log(item_id)
+        if (panier[item_id] != undefined ){
+            panier[item_id] = panier[item_id] +1;
+        }else{
+            panier[item_id] = 1;
+        }
+        console.log(panier);
+        localStorage.setItem('panier',JSON.stringify(panier));
+        document.getElementById("panier").innerHTML = "panier("+ Object.keys(panier).length +")";
+       
+    })
+    
+    $(function(){
+        // Tableau pour stocker les articles du panier
+        var panier = [];
+        
+        // Initialisation du popover avec Flowbite (à la place de jQuery)
+        // Pas besoin d'initialiser manuellement si vous avez déjà chargé Flowbite
+        
+        // Gestion du clic sur les boutons "Ajouter au Panier"
+        $(document).on('click', '.ted', function() {
+            // Récupérer l'ID et le nom du produit
+            var productId = $(this).attr('id');
+            var productName = $(this).data('name');
+            
+            console.log("Produit ajouté - ID:", productId, "Nom:", productName);
+            
+            // Ajouter au panier ou augmenter la quantité si déjà présent
+            var found = false;
+            $.each(panier, function(index, item) {
+                if(item.id === productId) {
+                    item.quantity += 1;
+                    found = true;
+                    return false; // Équivalent à break
+                }
+            });
+            
+            if(!found) {
+                panier.push({
+                    id: productId,
+                    name: productName,
+                    quantity: 1
+                });
+            }
+            
+            // Mettre à jour l'affichage du panier
+            updateCartDisplay();
+        });
+        
+        // Fonction pour mettre à jour l'affichage du panier
+        function updateCartDisplay() {
+            // Mettre à jour le compteur
+            var totalItems = 0;
+            $.each(panier, function(index, item) {
+                totalItems += item.quantity;
+            });
+            
+            $('#cart-count').text(totalItems);
+            $('#panier-badge').text(totalItems + ' article(s)');
+            
+            // Vider et remplir la liste des articles
+            var $contenuPanier = $('#contenu-panier');
+            $contenuPanier.empty();
+            
+            if (panier.length === 0) {
+                $contenuPanier.append('<li class="py-2 text-center">Votre panier est vide</li>');
+            } else {
+                $.each(panier, function(index, item) {
+                    $contenuPanier.append(
+                        '<li class="py-2 border-b">' +
+                            '<span class="font-medium">' + item.name + '</span>' +
+                            '<div class="text-xs text-gray-500">Quantité: ' + item.quantity + '</div>' +
+                        '</li>'
+                    );
+                });
+            }
+        }
+        
+        // Initialiser l'affichage du panier vide
+        updateCartDisplay();
+    });
+    document.addEventListener('DOMContentLoaded', function() {
+        // Configuration du bouton de commande
+        const placeOrderBtn = document.getElementById('place-order-btn');
+        
+        placeOrderBtn.addEventListener('click', function() {
+          // Validation du formulaire
+          if (validateOrderForm()) {
+            // Simuler la soumission de la commande
+            // Dans une application réelle, vous enverriez les données au serveur
+            processOrder();
+          }
+        });
+      });
+      
+      document.addEventListener('DOMContentLoaded', function() {
+        // Récupérer le bouton de paiement
+        const proceedToPaymentBtn = document.getElementById('proceed-to-payment');
+        
+        // Ajouter un gestionnaire d'événements au bouton
+        proceedToPaymentBtn.addEventListener('click', function() {
+          // Vérifier si le panier n'est pas vide
+          const cartItemsContainer = document.getElementById('cart-items-container');
+          if (cartItemsContainer.children.length > 0) {
+            // Rediriger vers la page de commande
+            window.location.href = '{% url "checkout" %}';
+          } else {
+            // Afficher un message si le panier est vide
+            alert('Your cart is empty. Please add items before proceeding to checkout.');
+          }
+        });
+      });
+    
+</script>
+{%endblock%}

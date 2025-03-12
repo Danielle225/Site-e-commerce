@@ -1,0 +1,59 @@
+{% extends "shopping/navbar.html" %}
+{% block content %}
+<div class="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100">
+  <div class="max-w-4xl mx-auto px-4 py-12">
+    
+    <!-- En-tête de la page -->
+    <div class="flex items-center justify-between mb-8">
+      <h1 class="text-3xl font-bold text-gray-900 flex items-center gap-3">
+        <i class="lucide-credit-card w-8 h-8"></i>
+        Checkout
+      </h1>
+    </div>
+    
+      
+      <!-- Colonne de droite: Résumé de la commande -->
+      <div class="md:col-span-1">
+        <div class="bg-white rounded-2xl shadow-sm overflow-hidden sticky top-4">
+          <div class="p-6">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">Your Order</h2>
+            
+            <div class="divide-y divide-gray-200" id="order-items">
+              <!-- Les articles seront affichés ici -->
+              {% for item in cart_items %}
+              <div class="py-4">
+                <div class="flex justify-between mb-1">
+                  <span class="font-medium text-gray-800">{{ item.product.name }}</span>
+                  <span class="text-gray-800">${{ item.product.price }}</span>
+                </div>
+                <div class="flex justify-between text-sm text-gray-600">
+                  <span>Quantity: {{ item.quantity }}</span>
+                  <span>Total: ${{ item.total_price }}</span>
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+            
+            <div class="pt-4 mt-4 border-t border-gray-200">
+              <div class="flex justify-between items-center">
+                <span class="text-lg font-medium text-gray-900">Grand Total</span>
+                <span class="text-2xl font-bold text-gray-900" id="grand-total">${{ cart_total }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Navigation -->
+    <div class="mt-8 flex justify-between items-center">
+      <button class="text-blue-600 hover:text-blue-700 font-medium" onclick="window.location.href='#'">
+        Back to Cart
+      </button>
+      <button id="place-order-btn" class="bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 transition-colors font-medium">
+        Complete Order
+      </button>
+    </div>
+  </div>
+</div>
+{% endblock %}
