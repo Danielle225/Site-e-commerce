@@ -71,9 +71,12 @@
                   </div>
               </div>
               <ul id="contenu-panier" class="p-2"></ul>
-              <button id="proceed-to-checkout" class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+              <button id="proceed-to-checkout" class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center m-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                 Passer à la commande
             </button>
+            <button id="vider-panier" class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center m-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+              Videz panier
+          </button>
           </div>
           </li>
           <li>
@@ -92,5 +95,75 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
    
 </body>
-{%block js%}{%endblock%}
+{%block js%}
+<script>
+  $(document).ready(function() {
+      // Handler pour le bouton "Passer à la commande"
+      $('#proceed-to-checkout').on('click', function() {
+          window.location.href = "{% url 'checkout' %}";  // Adaptez l'URL selon votre configuration
+      });
+      
+      // Mettre à jour le nombre d'articles dans le badge du panier
+      function updateCartBadge() {
+          var panier = JSON.parse(localStorage.getItem('panier') || '[]');
+          var itemCount = 0;
+          
+          // Compter le nombre total d'articles (en tenant compte des quantités)
+          $.each(panier, function(index, item) {
+              itemCount += parseInt(item.quantity);
+          });
+          
+          // Mettre à jour les compteurs
+          $('#cart-count').text(itemCount);
+          $('#panier-badge').text(itemCount + (itemCount <= 1 ? ' article' : ' articles'));
+          
+          // Remplir le contenu du panier dans le popover
+          var $contenuPanier = $('#contenu-panier');
+          $contenuPanier.empty();
+          
+          if (panier.length === 0) {
+              $contenuPanier.html('<li class="py-2 text-center">Votre panier est vide</li>');
+              $('#proceed-to-checkout').prop('disabled', true).addClass('opacity-50 cursor-not-allowed');
+          } else {
+              var total = 0;
+              $.each(panier, function(index, item) {
+                  var itemTotal = item.price * item.quantity;
+                  total += itemTotal;
+                  
+                  $contenuPanier.append(
+                      '<li class="py-2 border-b last:border-0">' +
+                          '<div class="flex justify-between">' +
+                              '<span>' + item.name + ' × ' + item.quantity + '</span>' +
+                              '<span class="font-medium">' + itemTotal.toFixed(2) + ' FCFA</span>' +
+                          '</div>' +
+                      '</li>'
+                  );
+              });
+              
+              // Ajouter le total
+              $contenuPanier.append(
+                  '<li class="py-2 font-bold">' +
+                      '<div class="flex justify-between">' +
+                          '<span>Total:</span>' +
+                          '<span>' + total.toFixed(2) + ' FCFA</span>' +
+                      '</div>' +
+                  '</li>'
+              );
+              
+              $('#proceed-to-checkout').prop('disabled', false).removeClass('opacity-50 cursor-not-allowed');
+          }
+      }
+      
+      // Exécuter au chargement
+      updateCartBadge();
+      
+      // Mettre à jour le panier lors d'un changement dans le localStorage
+      window.addEventListener('storage', function(e) {
+          if (e.key === 'panier') {
+              updateCartBadge();
+          }
+      });
+  });
+  </script>
+{%endblock%}
 </html>

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Product, category
+from .models import Product, Category
 
 class ProductAdmin(admin.ModelAdmin):
     list_display = ['name', 'price', 'category', 'date']
@@ -10,7 +10,7 @@ class categoryAdmin(admin.ModelAdmin):
     search_fields = ['name']
     
 admin.site.register(Product, ProductAdmin)
-admin.site.register(category, categoryAdmin)
+admin.site.register(Category, categoryAdmin)
 # Compare this snippet from shopping/views.py:
 
 # Register your models here.
