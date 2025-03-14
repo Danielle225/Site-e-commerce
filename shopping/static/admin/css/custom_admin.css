@@ -1,0 +1,43 @@
+/* static/admin/css/custom_admin.css */
+/* Styles pour les statuts des commandes */
+.status-en_attente {
+    background-color: #FFC107;
+    color: black;
+    padding: 3px 8px;
+    border-radius: 3px;
+}
+
+.status-confirmee {
+    background-color: #2196F3;
+    color: white;
+    padding: 3px 8px;
+    border-radius: 3px;
+}
+
+.status-en_preparation {
+    background-color: #9C27B0;
+    color: white;
+    padding: 3px 8px;
+    border-radius: 3px;
+}
+
+.status-expediee {
+    background-color: #3F51B5;
+    color: white;
+    padding: 3px 8px;
+    border-radius: 3px;
+}
+
+.status-livree {
+    background-color: #4CAF50;
+    color: white;
+    padding: 3px 8px;
+    border-radius: 3px;
+}
+
+.status-annulee {
+    background-color: #F44336;
+    color: white;
+    padding: 3px 8px;
+    border-radius: 3px;
+}

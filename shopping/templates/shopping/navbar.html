@@ -5,7 +5,7 @@
     <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Transit_shop</title>
 </head>
 <body>
    
@@ -34,20 +34,20 @@
     </svg></button>
               <!-- Dropdown menu -->
               <div id="dropdownNavbar" class="z-10 hidden font-normal bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700 dark:divide-gray-600">
-                  <ul class="py-2 text-sm text-gray-700 dark:text-gray-400" aria-labelledby="dropdownLargeButton">
-                    <li>
-                      <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Voitures</a>
-                    </li>
-                    <li>
-                      <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Elevages</a>
-                    </li>
-                    <li>
-                      <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Alimentaires</a>
-                    </li>
-                  </ul>
-                  <div class="py-1">
-                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Vetements</a>
-                  </div>
+                <ul class="py-2 text-sm text-gray-700 dark:text-gray-400" aria-labelledby="dropdownLargeButton">
+                  {% for category in categories|slice:":3" %}
+                  <li>
+                      <a href="{% url 'category' slug=category.slug %}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">{{ category.name }}</a>
+                  </li>
+                  {% endfor %}
+              </ul>
+              {% if categories|length > 3 %}
+              <div class="py-1">
+                  {% for category in categories|slice:"3:" %}
+                  <a href="{% url 'category' slug=category.slug %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">{{ category.name }}</a>
+                  {% endfor %}
+              </div>
+              {% endif %}
               </div>
           </li>
           <li>
@@ -74,9 +74,7 @@
               <button id="proceed-to-checkout" class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center m-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                 Passer à la commande
             </button>
-            <button id="vider-panier" class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center m-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-              Videz panier
-          </button>
+            <button id="vider-panier" onclick="viderPanierNow()" class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center m-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Videz panier</button>
           </div>
           </li>
           <li>
@@ -97,73 +95,36 @@
 </body>
 {%block js%}
 <script>
-  $(document).ready(function() {
-      // Handler pour le bouton "Passer à la commande"
-      $('#proceed-to-checkout').on('click', function() {
-          window.location.href = "{% url 'checkout' %}";  // Adaptez l'URL selon votre configuration
+//
+// Assurez-vous que ce code est exécuté après le chargement complet de jQuery
+$(document).ready(function() {
+  // Attachez l'événement directement et de manière explicite
+  $('#vider-panier').on('click', function(e) {
+      e.preventDefault();
+      
+      // Vider le panier
+      localStorage.removeItem('panier');
+      
+      // Réinitialiser la variable panier si elle existe dans la portée
+      window.panier = [];
+      
+      // Notification avec SweetAlert
+      Swal.fire({
+          icon: 'info',
+          title: 'Votre panier a été vidé',
+          text: 'Il ne contient plus aucun produit.',
+          confirmButtonText: 'OK'
       });
       
-      // Mettre à jour le nombre d'articles dans le badge du panier
-      function updateCartBadge() {
-          var panier = JSON.parse(localStorage.getItem('panier') || '[]');
-          var itemCount = 0;
-          
-          // Compter le nombre total d'articles (en tenant compte des quantités)
-          $.each(panier, function(index, item) {
-              itemCount += parseInt(item.quantity);
-          });
-          
-          // Mettre à jour les compteurs
-          $('#cart-count').text(itemCount);
-          $('#panier-badge').text(itemCount + (itemCount <= 1 ? ' article' : ' articles'));
-          
-          // Remplir le contenu du panier dans le popover
-          var $contenuPanier = $('#contenu-panier');
-          $contenuPanier.empty();
-          
-          if (panier.length === 0) {
-              $contenuPanier.html('<li class="py-2 text-center">Votre panier est vide</li>');
-              $('#proceed-to-checkout').prop('disabled', true).addClass('opacity-50 cursor-not-allowed');
-          } else {
-              var total = 0;
-              $.each(panier, function(index, item) {
-                  var itemTotal = item.price * item.quantity;
-                  total += itemTotal;
-                  
-                  $contenuPanier.append(
-                      '<li class="py-2 border-b last:border-0">' +
-                          '<div class="flex justify-between">' +
-                              '<span>' + item.name + ' × ' + item.quantity + '</span>' +
-                              '<span class="font-medium">' + itemTotal.toFixed(2) + ' FCFA</span>' +
-                          '</div>' +
-                      '</li>'
-                  );
-              });
-              
-              // Ajouter le total
-              $contenuPanier.append(
-                  '<li class="py-2 font-bold">' +
-                      '<div class="flex justify-between">' +
-                          '<span>Total:</span>' +
-                          '<span>' + total.toFixed(2) + ' FCFA</span>' +
-                      '</div>' +
-                  '</li>'
-              );
-              
-              $('#proceed-to-checkout').prop('disabled', false).removeClass('opacity-50 cursor-not-allowed');
-          }
+      // Mettre à jour l'affichage ou recharger la page
+      if (typeof updateCartDisplay === 'function') {
+          updateCartDisplay();
+      } else {
+          // Si la fonction n'existe pas, recharger la page
+          window.location.reload();
       }
-      
-      // Exécuter au chargement
-      updateCartBadge();
-      
-      // Mettre à jour le panier lors d'un changement dans le localStorage
-      window.addEventListener('storage', function(e) {
-          if (e.key === 'panier') {
-              updateCartBadge();
-          }
-      });
   });
+});
   </script>
 {%endblock%}
 </html>

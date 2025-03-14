@@ -36,6 +36,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -43,6 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'shopping',
+    
 ]
 
 MIDDLEWARE = [
@@ -68,6 +70,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'shopping.views.base_context',
             ],
         },
     },
@@ -127,3 +130,75 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# Ajoutez ceci à votre fichier settings.py, pas dans admin.py
+
+
+# Configuration Jazzmin
+JAZZMIN_SETTINGS = {
+    # Titre du site dans l'interface admin
+    "site_title": "Bienvenue",
+    "site_header": "sur la page Administrateur",
+    "site_brand": "Votre Marque",
+    
+    # Interface utilisateur
+    "welcome_sign": "Bienvenue dans le panneau d'administration",
+    "search_model": ["shopping.Product", "shopping.Category", "shopping.Commande"],  # Corrigé le nom de l'app
+    
+    # Thème et couleurs
+    "theme": "flatly",
+    "dark_mode_theme": "darkly",
+    
+    # Icônes pour vos modèles (FontAwesome)
+    "icons": {
+        "shopping.Product": "fas fa-shopping-cart",  # Corrigé le nom de l'app
+        "shopping.Category": "fas fa-list",
+        "shopping.Commande": "fas fa-file-invoice",
+    },
+    
+    # Menu personnalisé
+    "custom_links": {
+        "shopping": [{  # Corrigé le nom de l'app
+            "name": "Statistiques",
+            "url": "admin:index",
+            "icon": "fas fa-chart-bar",
+        }],
+    },
+    
+    # CSS personnalisé
+    "custom_css": "static/admin/css/custom_admin.css",
+}
+
+# Paramètres UI additionnels
+JAZZMIN_UI_TWEAKS = {
+    "navbar_small_text": False,
+    "footer_small_text": False,
+    "body_small_text": False,
+    "brand_small_text": False,
+    "brand_colour": "navbar-success",
+    "accent": "accent-success",
+    "navbar": "navbar-dark",
+    "no_navbar_border": False,
+    "navbar_fixed": True,
+    "layout_boxed": False,
+    "footer_fixed": False,
+    "sidebar_fixed": True,
+    "sidebar": "sidebar-dark-success",
+    "sidebar_nav_small_text": False,
+    "sidebar_disable_expand": False,
+    "sidebar_nav_child_indent": True,
+    "sidebar_nav_compact_style": False,
+    "sidebar_nav_legacy_style": False,
+    "sidebar_nav_flat_style": False,
+    "theme": "default",
+    "dark_mode_theme": None,
+    "button_classes": {
+        "primary": "btn-primary",
+        "secondary": "btn-secondary",
+        "info": "btn-info",
+        "warning": "btn-warning",
+        "danger": "btn-danger",
+        "success": "btn-success"
+    }
+}

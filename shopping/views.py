@@ -1,8 +1,9 @@
 import json
-from django.shortcuts import redirect, render
+from django.http import Http404
+from django.shortcuts import get_object_or_404, redirect, render
 from django.core.paginator import Paginator
 from django.contrib import messages
-from .models import Product, Commande, LigneCommande
+from .models import Category, Product, Commande, LigneCommande
 from decimal import Decimal
 
 def index(request):
@@ -105,3 +106,58 @@ def confirmation(request, commande_id):
     except Commande.DoesNotExist:
         messages.error(request, 'Commande introuvable')
         return redirect('home')
+    
+def base_context(request):
+    """Contexte global pour inclure les catégories dans tous les templates"""
+    categories = Category.objects.all().order_by('name')
+    return {
+        'categories': categories
+    }
+
+def home_view(request):
+    """Vue de la page d'accueil"""
+    featured_products = Product.objects.filter(featured=True)[:8] if hasattr(Product, 'featured') else Product.objects.all()[:8]
+    categories = Category.objects.all()
+    
+    return render(request, 'shopping/home.html', {
+        'featured_products': featured_products,
+        'categories': categories,
+    })
+
+def category_view(request, slug):
+    """Vue pour afficher les produits d'une catégorie spécifique"""
+    category = get_object_or_404(Category, slug=slug)
+    products = Product.objects.filter(category=category)
+    
+    return render(request, 'shopping/category.html', {
+        'category': category,
+        'products': products,
+    })
+
+def product_list_view(request):
+    """Vue pour afficher tous les produits"""
+    products = Product.objects.all().order_by('-date')
+    
+    return render(request, 'shopping/products.html', {
+        'products': products,
+    })
+
+def product_detail_view(request, id):
+    """Vue pour afficher les détails d'un produit"""
+    product = get_object_or_404(Product, id=id)
+    related_products = Product.objects.filter(category=product.category).exclude(id=product.id)[:4]
+    
+    return render(request, 'shopping/product_detail.html', {
+        'product': product,
+        'related_products': related_products,
+    })
+def product_detail_by_category(request, category_slug, product_id):
+    try:
+        category = Category.objects.get(slug=category_slug)
+        product = Product.objects.get(id=product_id, category=category)
+        return render(request, 'shopping/detail_cat.html', {
+            'product': product,
+            'category': category
+        })
+    except (Category.DoesNotExist, Product.DoesNotExist):
+        raise Http404("Produit ou catégorie non trouvé")

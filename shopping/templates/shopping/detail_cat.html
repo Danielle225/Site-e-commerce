@@ -1,0 +1,74 @@
+{% extends 'shopping/navbar.html' %}
+
+{% block title %}{{ product.name }} - {{ category.name }}{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <!-- Fil d'Ariane -->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'home' %}">Accueil</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'category' category.slug %}">{{ category.name }}</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{ product.name }}</li>
+        </ol>
+    </nav>
+
+    <div class="row">
+        <!-- Image du produit -->
+        <div class="col-md-6">
+            <div class="product-image">
+                <img src="{{ product.image_url }}" alt="{{ product.name }}" class="img-fluid rounded">
+            </div>
+        </div>
+
+        <!-- Détails du produit -->
+        <div class="col-md-6">
+            <h1 class="mb-3">{{ product.name }}</h1>
+            <p class="text-muted">Catégorie: <a href="{% url 'category' category.slug %}">{{ category.name }}</a></p>
+            <h2 class="price mb-4">{{ product.price }} FCFA</h2>
+            
+            <div class="description mb-4">
+                <h3>Description</h3>
+                <p>{{ product.description|linebreaks }}</p>
+            </div>
+
+            <!-- Formulaire d'ajout au panier -->
+            <form action="#" method="post" class="mb-4">
+                {% csrf_token %}
+                <div class="form-group mb-3">
+                    <label for="quantity">Quantité:</label>
+                    <input type="number" name="quantity" id="quantity" value="1" min="1" class="form-control" style="width: 100px;">
+                </div>
+                <button type="submit" class="btn btn-primary btn-lg">Ajouter au panier</button>
+            </form>
+
+            <!-- Informations supplémentaires -->
+            <div class="additional-info">
+                <p><strong>Référence produit:</strong> #{{ product.id }}</p>
+                <p><strong>Disponibilité:</strong> En stock</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Produits similaires -->
+    <div class="similar-products mt-5">
+        <h3 class="mb-4">Produits similaires dans la catégorie {{ category.name }}</h3>
+        <div class="row">
+            {% for similar_product in similar_products %}
+                {% if similar_product.id != product.id %}
+                    <div class="col-md-3 mb-4">
+                        <div class="card h-100">
+                            <img src="{{ similar_product.image_url }}" class="card-img-top" alt="{{ similar_product.name }}">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ similar_product.name }}</h5>
+                                <p class="card-text">{{ similar_product.price }} FCFA</p>
+                                <a href="{% url 'product_detail_by_category' category.slug similar_product.id %}" class="btn btn-outline-primary">Voir le produit</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}
