@@ -1,74 +1,372 @@
-{% extends 'shopping/navbar.html' %}
+{% extends "shopping/navbar.html" %}
 
 {% block title %}{{ product.name }} - {{ category.name }}{% endblock %}
-
+    
 {% block content %}
-<div class="container my-5">
+<div class="container mx-auto px-4 my-8 bg-white min-h-screen">
     <!-- Fil d'Ariane -->
-    <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{% url 'home' %}">Accueil</a></li>
-            <li class="breadcrumb-item"><a href="{% url 'category' category.slug %}">{{ category.name }}</a></li>
-            <li class="breadcrumb-item active" aria-current="page">{{ product.name }}</li>
+    <nav class="mb-6">
+        <ol class="flex flex-wrap text-sm">
+            <li class="flex items-center">
+                <a href="{% url 'home' %}" class="text-blue-600 hover:text-blue-800">Accueil</a>
+                <span class="mx-2">/</span>
+            </li>
+            {% if category %}
+            <li class="flex items-center">
+                <a href="{% url 'category' category.slug %}" class="text-blue-600 hover:text-blue-800">{{ category.name }}</a>
+                <span class="mx-2">/</span>
+            </li>
+            {% endif %}
+            <li class="text-gray-500" aria-current="page">{{ product.name }}</li>
         </ol>
     </nav>
 
-    <div class="row">
-        <!-- Image du produit -->
-        <div class="col-md-6">
-            <div class="product-image">
-                <img src="{{ product.image_url }}" alt="{{ product.name }}" class="img-fluid rounded">
+    <!-- Product Section -->
+    <div class="flex flex-col md:flex-row gap-8">
+        <!-- Left Column - Product Image -->
+        <div class="w-full md:w-2/5">
+            <div class="border border-gray-200 rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow">
+                <img src="{{ product.image_url }}" alt="{{ product.name }}" class="w-full h-auto object-cover">
             </div>
         </div>
-
-        <!-- Détails du produit -->
-        <div class="col-md-6">
-            <h1 class="mb-3">{{ product.name }}</h1>
-            <p class="text-muted">Catégorie: <a href="{% url 'category' category.slug %}">{{ category.name }}</a></p>
-            <h2 class="price mb-4">{{ product.price }} FCFA</h2>
+        
+        <!-- Right Column - Product Info -->
+        <div class="w-full md:w-3/5">
+            <h1 class="text-2xl md:text-3xl font-bold mb-2">{{ product.name }}</h1>
             
-            <div class="description mb-4">
-                <h3>Description</h3>
-                <p>{{ product.description|linebreaks }}</p>
+            {% if category %}
+            <p class="text-gray-500 mb-3">Catégorie: <a href="{% url 'category' category.slug %}" class="text-blue-600 hover:text-blue-800">{{ category.name }}</a></p>
+            {% endif %}
+            
+            <h2 class="text-2xl font-bold text-red-600 mb-4">{{ product.price }} FCFA</h2>
+            
+            <div class="mb-6">
+                <h3 class="text-lg font-semibold mb-2">Description</h3>
+                <div class="text-gray-700">{{ product.description|linebreaks }}</div>
             </div>
-
-            <!-- Formulaire d'ajout au panier -->
-            <form action="#" method="post" class="mb-4">
-                {% csrf_token %}
-                <div class="form-group mb-3">
-                    <label for="quantity">Quantité:</label>
-                    <input type="number" name="quantity" id="quantity" value="1" min="1" class="form-control" style="width: 100px;">
+            
+            <div class="mb-4">
+                <div class="flex items-center text-sm text-green-600 mb-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                    </svg>
+                    <span>En stock</span>
                 </div>
-                <button type="submit" class="btn btn-primary btn-lg">Ajouter au panier</button>
-            </form>
-
+                <div class="text-sm text-gray-700">Livraison disponible</div>
+            </div>
+            
+            <!-- Add to Cart Section -->
+            <div class="border border-gray-200 rounded-lg p-4 bg-gray-50 mb-6">
+                <div class="mb-4">
+                    <label for="quantity" class="block text-sm font-medium text-gray-700 mb-1">Quantité</label>
+                    <select id="quantity" class="border border-gray-300 rounded-md py-2 px-3 w-24 focus:ring-blue-500 focus:border-blue-500">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                </div>
+                
+                <button id="{{product.pk}}" data-name="{{product.name}}" data-price="{{product.price}}" class="ted w-full bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-medium py-2 px-4 rounded-md shadow transition-colors focus:outline-none focus:ring-2 focus:ring-yellow-300 mb-2">
+                    Ajouter au panier
+                </button>
+                
+                <button class="w-full bg-orange-400 hover:bg-orange-500 text-gray-900 font-medium py-2 px-4 rounded-md shadow transition-colors focus:outline-none focus:ring-2 focus:ring-orange-300">
+                    Acheter maintenant
+                </button>
+            </div>
+            
             <!-- Informations supplémentaires -->
-            <div class="additional-info">
-                <p><strong>Référence produit:</strong> #{{ product.id }}</p>
-                <p><strong>Disponibilité:</strong> En stock</p>
+            <div class="border-t border-gray-200 pt-4">
+                <p class="text-sm mb-1"><span class="font-medium">Référence produit:</span> #{{ product.id }}</p>
+                <p class="text-sm"><span class="font-medium">Disponibilité:</span> <span class="text-green-600">En stock</span></p>
             </div>
         </div>
     </div>
-
-    <!-- Produits similaires -->
-    <div class="similar-products mt-5">
-        <h3 class="mb-4">Produits similaires dans la catégorie {{ category.name }}</h3>
-        <div class="row">
+    
+    <!-- Produits similaires - Visible uniquement si similar_products existe -->
+    {% if similar_products %}
+    <div class="mt-12">
+        <h3 class="text-xl font-bold mb-6 pb-2 border-b border-gray-200">Produits similaires{% if category %} dans la catégorie {{ category.name }}{% endif %}</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {% for similar_product in similar_products %}
                 {% if similar_product.id != product.id %}
-                    <div class="col-md-3 mb-4">
-                        <div class="card h-100">
-                            <img src="{{ similar_product.image_url }}" class="card-img-top" alt="{{ similar_product.name }}">
-                            <div class="card-body">
-                                <h5 class="card-title">{{ similar_product.name }}</h5>
-                                <p class="card-text">{{ similar_product.price }} FCFA</p>
-                                <a href="{% url 'product_detail_by_category' category.slug similar_product.id %}" class="btn btn-outline-primary">Voir le produit</a>
-                            </div>
+                    <div class="border border-gray-200 rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow">
+                        <div class="aspect-w-1 aspect-h-1 w-full overflow-hidden">
+                            <img src="{{ similar_product.image_url }}" class="w-full h-48 object-cover" alt="{{ similar_product.name }}">
+                        </div>
+                        <div class="p-4">
+                            <h5 class="text-gray-900 font-medium text-base mb-2 truncate">{{ similar_product.name }}</h5>
+                            <p class="text-red-600 font-bold mb-3">{{ similar_product.price }} FCFA</p>
+                            <a href="{% url 'product_detail_by_category' category.slug similar_product.id %}" class="block text-center bg-gray-100 hover:bg-gray-200 text-gray-900 font-medium py-2 px-4 rounded transition-colors">Voir le produit</a>
                         </div>
                     </div>
                 {% endif %}
             {% endfor %}
         </div>
     </div>
+    {% endif %}
 </div>
 {% endblock %}
+
+{% block js %}
+<script type="text/javascript">
+    console.log('juste pour tester');
+    if(localStorage.getItem('panier')== null){
+        var panier = {};
+    }else{
+        panier = JSON.parse(localStorage.getItem('panier'));
+    }
+    $(document).on('click','.ted',function(){
+        console.log('ajouter');
+        var item_id = this.id.toString();
+        console.log(item_id)
+        if (panier[item_id] != undefined ){
+            panier[item_id] = panier[item_id] +1;
+        }else{
+            panier[item_id] = 1;
+        }
+        console.log(panier);
+        localStorage.setItem('panier',JSON.stringify(panier));
+        document.getElementById("panier").innerHTML = "panier("+ Object.keys(panier).length +")";
+       
+    })
+    $(function(){
+        // Tableau pour stocker les articles du panier
+        var panier = [];
+        
+        // Récupérer le panier du localStorage s'il existe
+        try {
+            if (localStorage.getItem('panier')) {
+                // Récupérer les données
+                var storedPanier = JSON.parse(localStorage.getItem('panier'));
+                
+                // Vérifier que c'est bien un tableau
+                if (Array.isArray(storedPanier)) {
+                    // Filtrer les éléments invalides
+                    panier = storedPanier.filter(function(item) {
+                        return item && typeof item === 'object' && 
+                               item.id && item.name && 
+                               typeof item.price !== 'undefined' && 
+                               typeof item.quantity !== 'undefined';
+                    });
+                } else {
+                    // Si ce n'est pas un tableau, réinitialiser
+                    console.log("Format de panier incorrect, réinitialisation");
+                    localStorage.removeItem('panier');
+                }
+            }
+        } catch (e) {
+            console.error("Erreur lors de la récupération du panier:", e);
+            localStorage.removeItem('panier');
+        }
+        
+        // Mettre à jour l'affichage initial
+        updateCartDisplay();
+        
+        // Gestion du clic sur les boutons "Ajouter au Panier"
+        $(document).on('click', '.ted', function() {
+            // Récupérer l'ID et le nom du produit
+            var productId = $(this).attr('id');
+            var productName = $(this).data('name');
+            var productPrice = parseFloat($(this).data('price'));
+            
+            if (!productId || !productName || isNaN(productPrice)) {
+                console.error("Données de produit invalides");
+                return;
+            }
+            
+            console.log("Produit ajouté - ID:", productId, "Nom:", productName, "Prix:", productPrice);
+            
+            // Ajouter au panier ou augmenter la quantité si déjà présent
+            var found = false;
+            for (var i = 0; i < panier.length; i++) {
+                if (panier[i] && panier[i].id === productId) {
+                    panier[i].quantity += 1;
+                    found = true;
+                    break;
+                }
+            }
+            
+            if (!found) {
+                panier.push({
+                    id: productId,
+                    name: productName,
+                    price: productPrice,
+                    quantity: 1
+                });
+            }
+            
+            // Sauvegarder dans localStorage
+            localStorage.setItem('panier', JSON.stringify(panier));
+            
+            // Mettre à jour l'affichage du panier
+            updateCartDisplay();
+            
+            // Afficher une notification visuelle que l'article a été ajouté
+            Swal.fire({
+                title: 'Produit ajouté au panier!',
+                icon: 'success'
+            });
+            
+            //alert("Produit ajouté au panier !");
+        });
+        
+        // Fonction pour mettre à jour l'affichage du panier
+        function updateCartDisplay() {
+            // Mettre à jour le compteur
+            var totalItems = 0;
+            var totalPrice = 0;
+            
+            // S'assurer qu'on a un tableau valide
+            if (!Array.isArray(panier)) {
+                panier = [];
+                localStorage.setItem('panier', JSON.stringify(panier));
+            }
+            
+            // Calculer le total en vérifiant chaque élément
+            for (var i = 0; i < panier.length; i++) {
+                var item = panier[i];
+                if (item && typeof item.quantity === 'number' && typeof item.price === 'number') {
+                    totalItems += item.quantity;
+                    totalPrice += item.price * item.quantity;
+                }
+            }
+            
+            // Mettre à jour les affichages du panier
+            if ($('#cart-count').length) $('#cart-count').text(totalItems);
+            if ($('#panier-badge').length) $('#panier-badge').text(totalItems + ' article(s)');
+            if ($('#panier').length) $('#panier').text("Panier (" + totalItems + ")");
+            
+            // Vider et remplir la liste des articles
+            var $contenuPanier = $('#contenu-panier');
+            if ($contenuPanier.length) {
+                $contenuPanier.empty();
+                
+                if (panier.length === 0) {
+                    $contenuPanier.append('<li class="py-2 text-center">Votre panier est vide</li>');
+                    $('#proceed-to-checkout').addClass('opacity-50 cursor-not-allowed').prop('disabled', true);
+                } else {
+                    for (var i = 0; i < panier.length; i++) {
+                        var item = panier[i];
+                        if (item && item.id && item.name && typeof item.price === 'number' && typeof item.quantity === 'number') {
+                            $contenuPanier.append(
+                                '<li class="py-2 border-b flex justify-between">' +
+                                    '<div>' +
+                                        '<span class="font-medium">' + item.name + '</span>' +
+                                        '<div class="text-xs text-gray-500">Quantité: ' + item.quantity + '</div>' +
+                                    '</div>' +
+                                    '<div class="text-right">' +
+                                        '<div class="font-medium">' + (item.price * item.quantity).toFixed(2) + ' FCFA</div>' +
+                                        '<button class="text-red-500 text-xs remove-item" data-id="' + item.id + '">Retirer</button>' +
+                                    '</div>' +
+                                '</li>'
+                            );
+                        }
+                    }
+                    
+                    // Ajouter le total
+                    $contenuPanier.append(
+                        '<li class="py-2 font-bold flex justify-between">' +
+                            '<span>Total:</span>' +
+                            '<span>' + totalPrice.toFixed(2) + ' FCFA</span>' +
+                        '</li>'
+                    );
+                    
+                    $('#proceed-to-checkout').removeClass('opacity-50 cursor-not-allowed').prop('disabled', false);
+                }
+                
+                // Ajouter un gestionnaire pour le bouton de suppression
+                $('.remove-item').on('click', function(e) {
+                    e.stopPropagation();
+                    var idToRemove = $(this).data('id');
+                    
+                    for (var i = 0; i < panier.length; i++) {
+                        if (panier[i] && panier[i].id === idToRemove) {
+                            if (panier[i].quantity > 1) {
+                                panier[i].quantity -= 1;
+                            } else {
+                                panier.splice(i, 1);
+                            }
+                            break;
+                        }
+                    }
+                    
+                    // Sauvegarder dans localStorage
+                    localStorage.setItem('panier', JSON.stringify(panier));
+                    
+                    // Mettre à jour l'affichage
+                    updateCartDisplay();
+                });
+            }
+        }
+        $(document).on('click','#vider-panier',function(){
+            panier = [];
+            localStorage.removeItem('panier');
+            updateCartDisplay();
+            Swal.fire({
+                icon: 'info',
+                title: 'Votre panier a été vidé',
+                text: 'Il ne contient plus aucun produit.',
+                confirmButtonText: 'OK'
+            });
+            
+        });
+        
+        // Gestionnaire d'événement pour le bouton "Passer à la commande"
+        $(document).on('click', '#proceed-to-checkout', function(e) {
+            // Si le bouton est désactivé, ne rien faire
+            if ($(this).prop('disabled')) {
+                e.preventDefault();
+                return false;
+            }
+            
+            // Vérifier que le panier n'est pas vide
+            if (!Array.isArray(panier) || panier.length === 0) {
+                alert("Votre panier est vide. Veuillez ajouter des articles avant de commander.");
+                e.preventDefault();
+                return false;
+            }
+            
+            // Enregistrer les données du panier pour la page de commande
+            sessionStorage.setItem('commandeEnCours', JSON.stringify(panier));
+            
+            // Rediriger vers la page de commande
+            window.location.href = "{% url 'checkout' %}";
+        });
+        
+        // Vérifions et activons le bouton au chargement de la page
+        function checkoutButtonState() {
+            var panier = [];
+            if (localStorage.getItem('panier')) {
+                try {
+                    panier = JSON.parse(localStorage.getItem('panier'));
+                    if (Array.isArray(panier) && panier.length > 0) {
+                        $('#proceed-to-checkout').removeClass('opacity-50 cursor-not-allowed').prop('disabled', false);
+                        return;
+                    }
+                } catch (e) {
+                    console.error("Erreur de lecture du panier:", e);
+                }
+            }
+            
+            // Si on arrive ici, le panier est vide ou invalide
+            $('#proceed-to-checkout').addClass('opacity-50 cursor-not-allowed').prop('disabled', true);
+        }
+        
+        // Exécuter cette vérification au chargement
+        checkoutButtonState();
+        
+        // Debug - Afficher l'état des éléments clés
+        console.log("État du bouton Commander:", {
+            "existe": $('#proceed-to-checkout').length > 0,
+            "désactivé": $('#proceed-to-checkout').prop('disabled')
+        });
+       
+    });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+</script>
+{%endblock%}

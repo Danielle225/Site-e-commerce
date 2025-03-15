@@ -137,9 +137,12 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Configuration Jazzmin
 JAZZMIN_SETTINGS = {
+ 
+    "icon": "fas fa-chart-bar",
+
     # Titre du site dans l'interface admin
-    "site_title": "Bienvenue",
-    "site_header": "sur la page Administrateur",
+    "site_title": "Transit_Shop",
+    "site_header": "Page Administrateur",
     "site_brand": "Votre Marque",
     
     # Interface utilisateur
@@ -149,6 +152,7 @@ JAZZMIN_SETTINGS = {
     # Thème et couleurs
     "theme": "flatly",
     "dark_mode_theme": "darkly",
+    
     
     # Icônes pour vos modèles (FontAwesome)
     "icons": {
@@ -162,12 +166,14 @@ JAZZMIN_SETTINGS = {
         "shopping": [{  # Corrigé le nom de l'app
             "name": "Statistiques",
             "url": "admin:index",
-            "icon": "fas fa-chart-bar",
         }],
+
     },
     
     # CSS personnalisé
     "custom_css": "static/admin/css/custom_admin.css",
+                "show_ui_builder": False,
+
 }
 
 # Paramètres UI additionnels

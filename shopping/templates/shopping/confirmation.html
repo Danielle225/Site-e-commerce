@@ -1,55 +1,105 @@
 {% extends "shopping/navbar.html" %}  
-
 {% block content %}
 <div class="container mx-auto p-4">
-    <div class="bg-white rounded-lg shadow-md p-6 max-w-2xl mx-auto">
+    <div class="bg-white rounded-lg shadow-md p-6 w-full mx-auto">
         <h1 class="text-2xl font-bold mb-4">Confirmation de commande</h1>
-        
+       
         <div class="mb-6">
             <h2 class="text-xl font-semibold mb-2">Détails de la commande #{{ commande.id }}</h2>
-            <p><strong>Date :</strong> {{ commande.date}}</p>
-            <p><strong>Statut :</strong> {{ commande.status }}</p>
-            <p><strong>Total :</strong> {{ commande.total }} FCFA</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-2 border rounded-lg p-3 bg-gray-50">
+                <div>
+                    <p><strong>Date :</strong> {{ commande.date }}</p>
+                    <p><strong>Total :</strong> {{ commande.total|floatformat:2 }} FCFA</p>
+                </div>
+                <div>
+                    <p><strong>Statut :</strong> {{ commande.status }}</p>
+                </div>
+            </div>
         </div>
-        
+       
         <div class="mb-6">
             <h3 class="text-lg font-semibold mb-2">Articles commandés</h3>
-            <table class="w-full border-collapse">
-                <thead>
-                    <tr class="bg-gray-100">
-                        <th class="border p-2 text-left">Produit</th>
-                        <th class="border p-2 text-center">Quantité</th>
-                        <th class="border p-2 text-right">Prix</th>
-                        <th class="border p-2 text-right">Total</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for ligne in lignes %}
-                    <tr>
-                        <td class="border p-2">{{ ligne.product.name }}</td>
-                        <td class="border p-2 text-center">{{ ligne.quantite }}</td>
-                        <td class="border p-2 text-right">{{ ligne.price }} FCFA</td>
-                        <td class="border p-2 text-right">{{ ligne.total }} FCFA</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-                <tfoot>
-                    <tr class="font-bold">
-                        <td class="border p-2" colspan="3">Total</td>
-                        <td class="border p-2 text-right">{{ commande.total }} FCFA</td>
-                    </tr>
-                </tfoot>
-            </table>
+            <div class="overflow-x-auto">
+                <table class="w-full table-auto border-collapse">
+                    <thead>
+                        <tr class="bg-gray-100">
+                            <th class="border p-2 text-left">Produit</th>
+                            <th class="border p-2 text-center">Quantité</th>
+                            <th class="border p-2 text-right">Prix unitaire</th>
+                            <th class="border p-2 text-right">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for ligne in lignes %}
+                        <tr class="hover:bg-gray-50">
+                            <td class="border p-2">{{ ligne.nom }}</td>
+                            <td class="border p-2 text-center">{{ ligne.quantite }}</td>
+                            <td class="border p-2 text-right">{{ ligne.prix|floatformat:2 }} FCFA</td>
+                            <td class="border p-2 text-right">{{ ligne.sous_total|floatformat:2 }} FCFA</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                    <tfoot>
+                        <tr class="font-bold bg-gray-100">
+                            <td class="border p-2" colspan="3">Total</td>
+                            <td class="border p-2 text-right">{{ commande.total|floatformat:2 }} FCFA</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
         </div>
         
-        <div class="flex justify-between">
-            <a href="{% url 'home' %}" class="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded">
+        <!-- Section de paiement CinetPay -->
+        <div class="mb-6 text-center">
+            <h3 class="text-lg font-semibold mb-4">Payer ma commande</h3>
+            <p class="mb-4">Cliquez sur le bouton ci-dessous pour procéder au paiement sécurisé via CinetPay</p>
+            
+            <!-- Bouton CinetPay -->
+            <button id="cinetpay-button" class="bg-green-600 hover:bg-green-700 text-white py-3 px-6 rounded-lg transition-colors font-bold text-lg flex items-center mx-auto justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2z" />
+                </svg>
+                Payer {{ commande.total|floatformat:2 }} FCFA
+            </button>
+        </div>
+       
+        <div class="border-t pt-4 mt-4 flex flex-col sm:flex-row justify-between gap-3">
+            <a href="{% url 'home' %}" class="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded transition-colors text-center">
                 Retour à l'accueil
             </a>
-            <a href="#" class="bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded">
+            <a href="#" class="bg-gray-600 hover:bg-gray-700 text-white py-2 px-4 rounded transition-colors text-center">
                 Télécharger la facture
             </a>
         </div>
     </div>
 </div>
+
+
 {% endblock %}
+{%block js%}
+<!-- Intégration du SDK CinetPay -->
+<script src="https://api-checkout.cinetpay.com/v2/payment" defer></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Configuration du bouton CinetPay
+        document.getElementById('cinetpay-button').addEventListener('click', function() {
+            // Initialisation de CinetPay
+            CinetPay.setConfig({
+                apikey: '33151480867d5ae02adf9e2.63941395',  // Remplacez par votre clé API CinetPay
+                site_id: '105889978',  // Remplacez par votre ID de site CinetPay
+                notify_url: '{% url "cinetpay_notification" %}',
+                return_url: '{% url "cinetpay_return" %}',
+                trans_id: '{{ commande.id }}',  // ID unique de la transaction
+                currency: 'XOF',  // Devise (FCFA)
+                description: 'Paiement commande #{{ commande.id }}',
+                amount: {{ commande.total }},  // Montant total
+                channels: 'ALL',  // Tous les canaux de paiement disponibles
+                lang: 'fr'  // Langue d'affichage
+            });
+            
+            // Démarrer le processus de paiement
+            CinetPay.getCheckout();
+        });
+    });
+</script>
+{%endblock%}

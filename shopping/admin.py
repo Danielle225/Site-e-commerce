@@ -2,6 +2,7 @@
 from django.contrib import admin
 from .models import Product, Category, Commande
 from django.utils.html import mark_safe
+from django.http import HttpResponseRedirect
 
 class ProductAdmin(admin.ModelAdmin):
     list_display = ['name', 'price', 'category', 'date']
@@ -10,12 +11,20 @@ class ProductAdmin(admin.ModelAdmin):
     search_fields = ['name', 'description']
     list_per_page = 15  
     ordering = ['-date']  
-    readonly_fields = ['date'] 
+    readonly_fields = ['date']
+    
+    def response_add(self, request, obj, post_url_continue=None):
+        # Rediriger vers la liste des produits après l'ajout
+        return HttpResponseRedirect("../")
 
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ['name', 'date','slug','description']
     search_fields = ['name','slug']
     list_per_page = 10
+    
+    def response_add(self, request, obj, post_url_continue=None):
+        # Rediriger vers la liste des catégories après l'ajout
+        return HttpResponseRedirect("../")
 
 class CommandeAdmin(admin.ModelAdmin):
     list_display = ['id', 'nom', 'email', 'total', 'status_display', 'date']
@@ -41,6 +50,10 @@ class CommandeAdmin(admin.ModelAdmin):
         return "-"
     status_display.short_description = "Statut"
     status_display.admin_order_field = 'status'
+    
+    def response_add(self, request, obj, post_url_continue=None):
+        # Rediriger vers la liste des commandes après l'ajout
+        return HttpResponseRedirect("../")
 
 # Enregistrement des modèles
 admin.site.register(Product, ProductAdmin)

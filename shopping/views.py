@@ -12,6 +12,7 @@ def index(request):
 
     if item_name and item_name.strip():
         productobjects = productobjects.filter(name__icontains=item_name)
+        
 
     paginator = Paginator(productobjects, 6)  
     page = request.GET.get('page')
@@ -129,6 +130,7 @@ def category_view(request, slug):
     category = get_object_or_404(Category, slug=slug)
     products = Product.objects.filter(category=category)
     
+    
     return render(request, 'shopping/category.html', {
         'category': category,
         'products': products,
@@ -161,3 +163,57 @@ def product_detail_by_category(request, category_slug, product_id):
         })
     except (Category.DoesNotExist, Product.DoesNotExist):
         raise Http404("Produit ou catégorie non trouvé")
+    
+
+# views.py
+from django.http import HttpResponse
+from django.shortcuts import render, redirect, get_object_or_404
+from django.views.decorators.csrf import csrf_exempt
+from .models import Commande
+import json
+
+@csrf_exempt
+def cinetpay_notification(request):
+    """Endpoint que CinetPay appelle pour notifier du statut du paiement"""
+    if request.method == "POST":
+        try:
+            # Récupérer les données de la notification
+            data = json.loads(request.body)
+            transaction_id = data.get('cpm_trans_id')
+            status = data.get('cpm_result')
+            
+            # Récupérer la commande correspondante
+            commande = get_object_or_404(Commande, id=transaction_id)
+            
+            if status == '00':  # Code de succès CinetPay
+                # Paiement réussi
+                commande.status = 'payée'  # Ajustez selon votre modèle
+                commande.save()
+            else:
+                # Paiement échoué
+                commande.status = 'paiement_échoué'  # Ajustez selon votre modèle
+                commande.save()
+                
+            return HttpResponse("OK")
+        except Exception as e:
+            # Logger l'erreur
+            return HttpResponse("Error", status=500)
+    
+    return HttpResponse("Method Not Allowed", status=405)
+
+def cinetpay_return(request):
+    """Page vers laquelle l'utilisateur est redirigé après le paiement"""
+    transaction_id = request.GET.get('cpm_trans_id')
+    
+    if not transaction_id:
+        # Rediriger vers une page d'erreur si pas d'ID de transaction
+        return redirect('payment_error')
+        
+    commande = get_object_or_404(Commande, id=transaction_id)
+    
+    if commande.status == 'payée':
+        # Paiement réussi
+        return render(request, 'shopping/payment_success.html', {'commande': commande})
+    else:
+        # Paiement échoué ou en attente
+        return render(request, 'shopping/payment_failed.html', {'commande': commande})
