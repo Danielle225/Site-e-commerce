@@ -1,61 +1,41 @@
-# admin.py
 from django.contrib import admin
-from .models import Product, Category, Commande
-from django.utils.html import mark_safe
-from django.http import HttpResponseRedirect
+from django.db.models import Sum, Count
+from .models import Product, Category, Commande, LigneCommande
 
+@admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ['name', 'price', 'category', 'date']
-    list_filter = ['category', 'date']
-    list_editable = ['price']
-    search_fields = ['name', 'description']
-    list_per_page = 15  
-    ordering = ['-date']  
-    readonly_fields = ['date']
+    list_display = ('name', 'price', 'category')
     
-    def response_add(self, request, obj, post_url_continue=None):
-        # Rediriger vers la liste des produits après l'ajout
-        return HttpResponseRedirect("../")
-
-class CategoryAdmin(admin.ModelAdmin):
-    list_display = ['name', 'date','slug','description']
-    search_fields = ['name','slug']
-    list_per_page = 10
+    def get_queryset(self, request):
+        return super().get_queryset(request)
     
-    def response_add(self, request, obj, post_url_continue=None):
-        # Rediriger vers la liste des catégories après l'ajout
-        return HttpResponseRedirect("../")
+    def changelist_view(self, request, extra_context=None):
+        # Calcul des métriques pour le tableau de bord
+        extra_context = extra_context or {}
+        
+        # Métriques Produits
+        extra_context['total_products'] = Product.objects.count()
+        extra_context['total_product_value'] = sum(
+            product.price for product in Product.objects.all()
+        )
+        
+        # Métriques Commandes
+        extra_context['total_orders'] = Commande.objects.count()
+        extra_context['total_revenue'] = Commande.objects.aggregate(
+            total=Sum('total')
+        )['total'] or 0
+        
+        # Métriques Catégories
+        extra_context['total_categories'] = Category.objects.count()
+        
+        return super().changelist_view(request, extra_context)
 
+@admin.register(Commande)
 class CommandeAdmin(admin.ModelAdmin):
-    list_display = ['id', 'nom', 'email', 'total', 'status_display', 'date']
-    list_filter = ['status', 'date']
-    search_fields = ['nom', 'email', 'telephone']
-    readonly_fields = ['date']
-    fieldsets = (
-        ('Informations client', {
-            'fields': ('nom', 'email', 'telephone', 'adresse')
-        }),
-        ('Détails commande', {
-            'fields': ('total', 'status', 'date')
-        }),
-    )
-    list_per_page = 20
-    
-    def get_list_display_links(self, request, list_display):
-        return ['id', 'nom']
-    
-    def status_display(self, obj):
-        if hasattr(obj, 'status') and obj.status:
-            return mark_safe(f'<span class="status-{obj.status}">{obj.get_status_display()}</span>')
-        return "-"
-    status_display.short_description = "Statut"
-    status_display.admin_order_field = 'status'
-    
-    def response_add(self, request, obj, post_url_continue=None):
-        # Rediriger vers la liste des commandes après l'ajout
-        return HttpResponseRedirect("../")
+    list_display = ('nom', 'email', 'total', 'status', 'date')
+    list_filter = ('status', 'date')
 
-# Enregistrement des modèles
-admin.site.register(Product, ProductAdmin)
-admin.site.register(Category, CategoryAdmin)
-admin.site.register(Commande, CommandeAdmin)
+@admin.register(Category)
+class CategoryAdmin(admin.ModelAdmin):
+    list_display = ('name', 'get_product_count')
+    prepopulated_fields = {'slug': ('name',)}

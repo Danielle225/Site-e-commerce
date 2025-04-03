@@ -217,3 +217,4 @@ def cinetpay_return(request):
     else:
         # Paiement échoué ou en attente
         return render(request, 'shopping/payment_failed.html', {'commande': commande})
+    

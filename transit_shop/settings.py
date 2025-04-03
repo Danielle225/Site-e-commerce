@@ -30,7 +30,7 @@ SECRET_KEY = 'django-insecure-!_d_te@bo(w%dkkmli0qjj+5%+01xe0xmi^soy%(-oq=k*a((&
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -124,7 +124,10 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
@@ -137,46 +140,56 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Configuration Jazzmin
 JAZZMIN_SETTINGS = {
- 
+    # "language_chooser": True,
     "icon": "fas fa-chart-bar",
-
-    # Titre du site dans l'interface admin
     "site_title": "Transit_Shop",
     "site_header": "Page Administrateur",
-    "site_brand": "Votre Marque",
+    "site_brand": "Transit Shop",
     
-    # Interface utilisateur
+    
     "welcome_sign": "Bienvenue dans le panneau d'administration",
-    "search_model": ["shopping.Product", "shopping.Category", "shopping.Commande"],  # Corrigé le nom de l'app
+    "search_model": ["shopping.Product", "shopping.Category", "shopping.Commande"],
     
-    # Thème et couleurs
     "theme": "flatly",
     "dark_mode_theme": "darkly",
     
-    
-    # Icônes pour vos modèles (FontAwesome)
     "icons": {
-        "shopping.Product": "fas fa-shopping-cart",  # Corrigé le nom de l'app
+        "shopping.Product": "fas fa-shopping-cart",
         "shopping.Category": "fas fa-list",
         "shopping.Commande": "fas fa-file-invoice",
     },
     
-    # Menu personnalisé
     "custom_links": {
-        "shopping": [{  # Corrigé le nom de l'app
-            "name": "Statistiques",
-            "url": "admin:index",
-        }],
-
+         "shopping": [
+            {
+                "name": "Statistiques Produits",
+                "url": "admin:shopping_product_changelist",
+                "icon": "fas fa-shopping-cart",
+                "badge": {
+                    "text": "Produits",
+                    "color": "info",
+                    # Note: Dans v3.0.1, le badge ne peut pas être dynamique
+                }
+            },
+            {
+                "name": "Statistiques Commandes",
+                "url": "admin:shopping_commande_changelist", 
+                "icon": "fas fa-file-invoice",
+                "badge": {
+                    "text": "Commandes",
+                    "color": "success",
+                }
+            }
+        ]
     },
     
-    # CSS personnalisé
-    "custom_css": "static/admin/css/custom_admin.css",
-                "show_ui_builder": False,
+    # "custom_css": "admin/css/custom_admin.css",
+    "show_ui_builder": False,
+    
+  
 
 }
 
-# Paramètres UI additionnels
 JAZZMIN_UI_TWEAKS = {
     "navbar_small_text": False,
     "footer_small_text": False,
@@ -191,20 +204,4 @@ JAZZMIN_UI_TWEAKS = {
     "footer_fixed": False,
     "sidebar_fixed": True,
     "sidebar": "sidebar-dark-success",
-    "sidebar_nav_small_text": False,
-    "sidebar_disable_expand": False,
-    "sidebar_nav_child_indent": True,
-    "sidebar_nav_compact_style": False,
-    "sidebar_nav_legacy_style": False,
-    "sidebar_nav_flat_style": False,
-    "theme": "default",
-    "dark_mode_theme": None,
-    "button_classes": {
-        "primary": "btn-primary",
-        "secondary": "btn-secondary",
-        "info": "btn-info",
-        "warning": "btn-warning",
-        "danger": "btn-danger",
-        "success": "btn-success"
-    }
 }
