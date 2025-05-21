@@ -1,0 +1,54 @@
+{% extends "shopping/navbar.html" %}
+{% block title %}Contactez-nous{% endblock %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto px-4 py-12">
+    <h1 class="text-3xl font-bold text-gray-800 mb-6 pb-2 relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-16 after:h-1 after:bg-blue-600">Contactez-nous</h1>
+    
+    <p class="text-lg text-gray-600 mb-8 leading-relaxed">Si vous avez des questions ou des commentaires, n'hésitez pas à nous contacter !</p>
+    
+    <div class="bg-gray-50 rounded-xl shadow-lg p-8">
+        <form method="post" action="{% url 'contact' %}" class="space-y-6">
+            {% csrf_token %}
+            
+            <div>
+                <label for="name" class="block text-gray-700 font-medium mb-2">Nom:</label>
+                <input type="text" id="name" name="name" required 
+                    class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200">
+            </div>
+            
+            <div>
+                <label for="email" class="block text-gray-700 font-medium mb-2">Email:</label>
+                <input type="email" id="email" name="email" required 
+                    class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200">
+            </div>
+            
+            <div>
+                <label for="message" class="block text-gray-700 font-medium mb-2">Message:</label>
+                <textarea id="message" name="message" rows="5" required 
+                    class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 resize-y min-h-[120px]"></textarea>
+            </div>
+            
+            <div>
+                <button type="submit" 
+                    class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-lg shadow transition duration-300 hover:translate-y-[-2px] hover:shadow-md active:translate-y-0">
+                    Envoyer
+                </button>
+            </div>
+        </form>
+    </div>
+    
+    {% if message %}
+        <div class="mt-6 bg-green-100 border-l-4 border-green-500 text-green-800 p-4 rounded animate-[fadeIn_0.5s_ease-in-out]">
+            {{ message }}
+        </div>
+    {% endif %}
+</div>
+
+<style>
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+</style>
+{% endblock %}

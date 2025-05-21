@@ -1,10 +1,11 @@
 from django.urls import path
-from shopping.views import index, product_detail,checkout,process_checkout,confirmation,category_view,product_detail_by_category
+from shopping.views import index,product_detail,checkout,process_checkout,confirmation,category_view,product_detail_by_category,contact
 from . import views
 
 
 urlpatterns = [
     path('', index, name='home'),
+    path('contact', views.contact, name='contact'),
     path('<int:product_id>', product_detail, name='details'),
     path('checkout', checkout, name='checkout'),
     path('process_checkout', process_checkout, name='process_checkout'),

@@ -26,6 +26,18 @@ def product_detail(request, product_id):
 
 def checkout(request):
     return render(request, 'shopping/checkout.html')
+def contact(request):
+    if request.method == 'POST':
+        nom = request.POST.get('nom')
+        email = request.POST.get('email')
+        message = request.POST.get('message')
+        
+        # Vous pouvez ajouter ici la logique pour envoyer l'email ou enregistrer le message
+        
+        messages.success(request, 'Votre message a été envoyé avec succès.')
+        return redirect('home')
+    
+    return render(request, 'shopping/contact.html')
 
 def process_checkout(request):
     if request.method == 'POST':
