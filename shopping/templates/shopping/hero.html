@@ -1,0 +1,91 @@
+{% comment %}
+  Fichier: hero.html - Section hero pour la page d'accueil d'un site e-commerce
+  À inclure via {% include "shopping/hero.html" %}
+{% endcomment %}
+
+<!-- Hero Section -->
+<div class="relative bg-gradient-to-r from-blue-700 to-indigo-800">
+  <!-- Background Pattern (optional) -->
+  <div class="absolute inset-0 opacity-10">
+    <svg class="w-full h-full" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none">
+      <defs>
+        <pattern id="dots" width="20" height="20" patternUnits="userSpaceOnUse">
+          <circle cx="10" cy="10" r="1.5" fill="white" />
+        </pattern>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#dots)" />
+    </svg>
+  </div>
+
+  <div class="container mx-auto px-4 py-16 md:py-24 relative">
+    <div class="flex flex-col md:flex-row items-center">
+      <!-- Hero Content -->
+      <div class="w-full md:w-1/2 text-center md:text-left mb-8 md:mb-0">
+        <h1 class="text-4xl md:text-5xl font-bold text-white mb-4">Découvrez Notre Collection</h1>
+        <p class="text-lg md:text-xl text-blue-100 mb-8">Les dernières tendances à des prix imbattables. Livraison rapide et paiement sécurisé.</p>
+        <div class="flex flex-wrap gap-4 justify-center md:justify-start">
+          <a href="#categories" class="bg-white hover:bg-gray-100 text-blue-800 font-semibold px-6 py-3 rounded-lg transition duration-300">
+            Nos Catégories
+          </a>
+          <a href="#products" class="bg-yellow-500 hover:bg-yellow-400 text-blue-900 font-semibold px-6 py-3 rounded-lg transition duration-300">
+            Promotions
+          </a>
+        </div>
+        
+        <!-- Optional Badges -->
+        <div class="flex flex-wrap gap-4 justify-center md:justify-start mt-8">
+          <div class="bg-white bg-opacity-10 px-4 py-2 rounded-full flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <span class="text-white text-sm">Livraison 24-48h</span>
+          </div>
+          <div class="bg-white bg-opacity-10 px-4 py-2 rounded-full flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+            </svg>
+            <span class="text-white text-sm">Paiement Sécurisé</span>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Hero Image -->
+      <div class="w-full md:w-1/2">
+        <div class="relative">
+          <!-- Image principale -->
+          <img src="/api/placeholder/600/400" alt="Produits en vedette" class="w-full h-auto rounded-lg shadow-xl" />
+          
+          <!-- Badge promo -->
+          <div class="absolute -top-4 -right-4 bg-red-500 text-white text-sm font-bold rounded-full w-20 h-20 flex items-center justify-center transform rotate-12">
+            <div>
+              <div class="text-xs">JUSQU'À</div>
+              <div class="text-xl font-bold">-50%</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Wave separator (optional) -->
+  <div class="absolute bottom-0 left-0 right-0">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 80" fill="#ffffff" preserveAspectRatio="none">
+      <path d="M0,32L80,42.7C160,53,320,75,480,74.7C640,75,800,53,960,42.7C1120,32,1280,32,1360,32L1440,32L1440,80L1360,80C1280,80,1120,80,960,80C800,80,640,80,480,80C320,80,160,80,80,80L0,80Z"></path>
+    </svg>
+  </div>
+</div>
+
+<!-- Optional: Trusted Brands Section -->
+<div class="bg-white py-10">
+  <div class="container mx-auto px-4">
+    <p class="text-center text-gray-500 text-sm mb-6">ILS NOUS FONT CONFIANCE</p>
+    <div class="flex flex-wrap justify-center items-center gap-8 md:gap-16">
+      <!-- Replace with actual brand logos -->
+      <div class="w-24 h-12 bg-gray-200 rounded opacity-50 flex items-center justify-center">Logo 1</div>
+      <div class="w-24 h-12 bg-gray-200 rounded opacity-50 flex items-center justify-center">Logo 2</div>
+      <div class="w-24 h-12 bg-gray-200 rounded opacity-50 flex items-center justify-center">Logo 3</div>
+      <div class="w-24 h-12 bg-gray-200 rounded opacity-50 flex items-center justify-center">Logo 4</div>
+      <div class="w-24 h-12 bg-gray-200 rounded opacity-50 flex items-center justify-center">Logo 5</div>
+    </div>
+  </div>
+</div>

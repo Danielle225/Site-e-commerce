@@ -1,101 +1,112 @@
 {% extends "shopping/navbar.html" %}
 
 {% block content %}
-<div class='row'>
-    <div class='col-md-12'>
-        <form class="mx-auto mt-2 p-4" method="GET" action="{% url 'home' %}">
-            <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Recherche</label>
-            <div class="relative">
-                <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                    <svg class="w-4 h-4 text-gray-500 dark:text-gray-400 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
-                    </svg>
-                </div>
-                <input type="search" id="default-search" name="name" class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Recherche categorie,produits" required />
-                <button type="submit" class="text-white absolute end-2.5 bottom-2.5 m-2 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Recherche</button>
-            </div>
+
+<!-- Search Section -->
+<div class="bg-white p-6 rounded-lg  mb-8">
+       <!-- Barre de recherche agrandie avec Tailwind -->
+        <form class="flex w-full max-w-3xl mx-auto" method='GET' action="{% url 'home'%}">
+        <input 
+            type="search" 
+            placeholder="Rechercher..." 
+            class="w-full h-14 px-4 py-2 text-lg border border-gray-300 rounded-l focus:outline-none focus:ring-0 shadow-none" for="default-search" id="default-search" name="name"
+        />
+        <button 
+            type="submit" 
+            class="bg-blue-500 hover:bg-blue-600 text-white px-6 h-14 text-lg rounded-r transition-colors" 
+        >
+            Rechercher
+        </button>
         </form>
+        </div>
+
+<!-- Categories Section (Optional) -->
+<div id="categories" class="container mx-auto px-4 py-8 bg-gray-50">
+    <h2 class="text-2xl font-bold tracking-tight text-gray-900 mb-6 text-center">Nos Catégories</h2>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        {% for category in categories %}
+        <a href="{% url 'category' category.slug %}" class="bg-white rounded-lg shadow-md p-4 flex flex-col items-center hover:shadow-lg transition">
+            <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-3">
+                <i class="text-blue-600 {{ category.icon_class }}"></i>
+            </div>
+            <h3 class="text-lg font-medium text-gray-800">{{ category.name }}</h3>
+        </a>
+        {% empty %}
+        <div class="col-span-4 text-center py-8 text-gray-500">Aucune catégorie disponible pour le moment</div>
+        {% endfor %}
     </div>
 </div>
 
+<!-- Products Section -->
 <div class="container mx-auto px-4 py-8">
     <h2 class="text-2xl font-bold tracking-tight text-gray-900 mb-6">Nos Produits</h2>
-    <div class="flex flex-wrap -mx-4 snap-x justify-between">
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {% for product in products %}
-        <div class="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition m-4">
-            <img src="{{ product.image_url }}" alt="{{ product.name }}" class="max-w-xs h-auto object-cover object-center mb-4 rounded-lg" />
-            <div class="mt-4">
-                <h3 class="text-sm font-semibold text-gray-800">
-                    <a href="#">
+        <div class="bg-white rounded-lg shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden">
+            <div class="relative h-56 overflow-hidden">
+                <img src="{{ product.image_url }}" alt="{{ product.name }}" class="w-full h-full object-cover object-center" />
+                {% if product.discount %}
+                <span class="absolute top-2 right-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">-{{ product.discount }}%</span>
+                {% endif %}
+            </div>
+            <div class="p-4">
+                <h3 class="text-lg font-semibold text-gray-800 mb-1">
+                    <a href="{{ product.pk }}">
                         {{ product.name }}
                     </a>
                 </h3>
-                <p class="text-sm text-gray-500">{{ product.description }}</p>
-                <p class="text-sm font-medium text-gray-900 mt-1">{{ product.price }} FCFA</p>
-            </div>
-            <div class="mt-4 flex space-x-2">
-                <a href="{{product.pk}}" class="text-center bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md text-sm font-medium">
-                    Voir Détails
-                </a>
-                <button id="{{product.pk}}"  data-name="{{product.name}}" data-price="{{product.price}}" class=" ted bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-md text-sm font-medium">
-                    Ajouter au Panier
-                </button>
+                <p class="text-sm text-gray-500 mb-2 line-clamp-2 h-10">{{ product.description }}</p>
+                <p class="text-lg font-medium text-gray-900">{{ product.price }} FCFA</p>
+                <div class="mt-4 flex space-x-2">
+                    <a href="{{product.pk}}" class="flex-1 text-center bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md text-sm font-medium transition-colors">
+                        Voir Détails
+                    </a>
+                    <button id="{{product.pk}}" data-name="{{product.name}}" data-price="{{product.price}}" class="add-to-cart flex-1 text-center bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-md text-sm font-medium transition-colors">
+                        <span class="hidden md:inline">Ajouter au Panier</span>
+                        <span class="md:hidden">+ Panier</span>
+                    </button>
+                </div>
             </div>
         </div>
+        {% empty %}
+        <div class="col-span-4 text-center py-12 text-gray-500">Aucun produit disponible pour le moment</div>
         {% endfor %}
     </div>
 </div>
 
 <!-- Pagination -->
-<div class="flex justify-center mt-6">
+<div class="flex justify-center mt-6 mb-12">
     <ul class="pagination flex space-x-2">
         {% if products.has_previous %}
             <li>
-                <a class="bg-gray-300 hover:bg-gray-400 text-gray-700 px-3 py-1 rounded" href="?page=1">Premier</a>
+                <a class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded-md transition" href="?page=1">Premier</a>
             </li>
             <li>
-                <a class="bg-gray-300 hover:bg-gray-400 text-gray-700 px-3 py-1 rounded" href="?page={{ products.previous_page_number }}">Précédent</a>
+                <a class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded-md transition" href="?page={{ products.previous_page_number }}">Précédent</a>
             </li>
         {% endif %}
 
-        <li class="bg-blue-500 text-white px-3 py-1 rounded">
+        <li class="bg-blue-500 text-white px-4 py-2 rounded-md">
             Page {{ products.number }} sur {{ products.paginator.num_pages }}
         </li>
 
         {% if products.has_next %}
             <li>
-                <a class="bg-gray-300 hover:bg-gray-400 text-gray-700 px-3 py-1 rounded" href="?page={{ products.next_page_number }}">Suivant</a>
+                <a class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded-md transition" href="?page={{ products.next_page_number }}">Suivant</a>
             </li>
             <li>
-                <a class="bg-gray-300 hover:bg-gray-400 text-gray-700 px-3 py-1 rounded" href="?page={{ products.paginator.num_pages }}">Dernier</a>
+                <a class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded-md transition" href="?page={{ products.paginator.num_pages }}">Dernier</a>
             </li>
         {% endif %}
     </ul>
 </div>
 
+<!-- Include Footer -->
+{% include "shopping/footer.html" %}
 {% endblock %}
 {%block js%}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script type="text/javascript">
-    console.log('juste pour tester');
-    if(localStorage.getItem('panier')== null){
-        var panier = {};
-    }else{
-        panier = JSON.parse(localStorage.getItem('panier'));
-    }
-    $(document).on('click','.ted',function(){
-        console.log('ajouter');
-        var item_id = this.id.toString();
-        console.log(item_id)
-        if (panier[item_id] != undefined ){
-            panier[item_id] = panier[item_id] +1;
-        }else{
-            panier[item_id] = 1;
-        }
-        console.log(panier);
-        localStorage.setItem('panier',JSON.stringify(panier));
-        document.getElementById("panier").innerHTML = "panier("+ Object.keys(panier).length +")";
-       
-    })
     $(function(){
         // Tableau pour stocker les articles du panier
         var panier = [];
@@ -116,21 +127,38 @@
                                typeof item.quantity !== 'undefined';
                     });
                 } else {
-                    // Si ce n'est pas un tableau, réinitialiser
-                    console.log("Format de panier incorrect, réinitialisation");
-                    localStorage.removeItem('panier');
+                    // Si ce n'est pas un tableau, convertir l'ancien format (objet) au nouveau format (tableau)
+                    var nouveauPanier = [];
+                    for (var id in storedPanier) {
+                        if (storedPanier.hasOwnProperty(id)) {
+                            // Essayer de récupérer les données du produit
+                            var element = $('#' + id);
+                            if (element.length > 0) {
+                                nouveauPanier.push({
+                                    id: id,
+                                    name: element.data('name') || 'Produit #' + id,
+                                    price: parseFloat(element.data('price')) || 0,
+                                    quantity: storedPanier[id]
+                                });
+                            }
+                        }
+                    }
+                    panier = nouveauPanier;
+                    // Sauvegarder immédiatement au nouveau format
+                    localStorage.setItem('panier', JSON.stringify(panier));
                 }
             }
         } catch (e) {
             console.error("Erreur lors de la récupération du panier:", e);
             localStorage.removeItem('panier');
+            panier = [];
         }
         
         // Mettre à jour l'affichage initial
         updateCartDisplay();
         
         // Gestion du clic sur les boutons "Ajouter au Panier"
-        $(document).on('click', '.ted', function() {
+        $(document).on('click', '.add-to-cart', function() {
             // Récupérer l'ID et le nom du produit
             var productId = $(this).attr('id');
             var productName = $(this).data('name');
@@ -171,10 +199,11 @@
             // Afficher une notification visuelle que l'article a été ajouté
             Swal.fire({
                 title: 'Produit ajouté au panier!',
-                icon: 'success'
+                text: productName + ' a été ajouté à votre panier',
+                icon: 'success',
+                timer: 1500,
+                showConfirmButton: false
             });
-            
-            //alert("Produit ajouté au panier !");
         });
         
         // Fonction pour mettre à jour l'affichage du panier
@@ -265,7 +294,9 @@
                 });
             }
         }
-        $(document).on('click','#vider-panier',function(){
+        
+        // Gestionnaire pour vider le panier
+        $(document).on('click', '#vider-panier', function() {
             panier = [];
             localStorage.removeItem('panier');
             updateCartDisplay();
@@ -275,7 +306,6 @@
                 text: 'Il ne contient plus aucun produit.',
                 confirmButtonText: 'OK'
             });
-            
         });
         
         // Gestionnaire d'événement pour le bouton "Passer à la commande"
@@ -288,7 +318,11 @@
             
             // Vérifier que le panier n'est pas vide
             if (!Array.isArray(panier) || panier.length === 0) {
-                alert("Votre panier est vide. Veuillez ajouter des articles avant de commander.");
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Panier vide',
+                    text: 'Votre panier est vide. Veuillez ajouter des articles avant de commander.'
+                });
                 e.preventDefault();
                 return false;
             }
@@ -302,35 +336,15 @@
         
         // Vérifions et activons le bouton au chargement de la page
         function checkoutButtonState() {
-            var panier = [];
-            if (localStorage.getItem('panier')) {
-                try {
-                    panier = JSON.parse(localStorage.getItem('panier'));
-                    if (Array.isArray(panier) && panier.length > 0) {
-                        $('#proceed-to-checkout').removeClass('opacity-50 cursor-not-allowed').prop('disabled', false);
-                        return;
-                    }
-                } catch (e) {
-                    console.error("Erreur de lecture du panier:", e);
-                }
+            if (Array.isArray(panier) && panier.length > 0) {
+                $('#proceed-to-checkout').removeClass('opacity-50 cursor-not-allowed').prop('disabled', false);
+            } else {
+                $('#proceed-to-checkout').addClass('opacity-50 cursor-not-allowed').prop('disabled', true);
             }
-            
-            // Si on arrive ici, le panier est vide ou invalide
-            $('#proceed-to-checkout').addClass('opacity-50 cursor-not-allowed').prop('disabled', true);
         }
         
         // Exécuter cette vérification au chargement
         checkoutButtonState();
-        
-        // Debug - Afficher l'état des éléments clés
-        console.log("État du bouton Commander:", {
-            "existe": $('#proceed-to-checkout').length > 0,
-            "désactivé": $('#proceed-to-checkout').prop('disabled')
-        });
-       
     });
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
 </script>
 {%endblock%}

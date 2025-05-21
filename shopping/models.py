@@ -1,13 +1,13 @@
 from django.db import models
 from django.utils.text import slugify
 
-# Create your models here.
+
 class Product(models.Model):
     name = models.CharField(max_length=255)
-    price = models.FloatField()  # Changé de FloatField à DecimalField
+    price = models.FloatField() 
     description = models.TextField()
     image_url = models.URLField(max_length=2083)
-    category = models.ForeignKey('Category', on_delete=models.CASCADE, related_name='products')  # Changé 'category' à 'Category'
+    category = models.ForeignKey('Category', on_delete=models.CASCADE, related_name='products') 
     date = models.DateTimeField(auto_now_add=True)
     
     class Meta:
@@ -28,16 +28,15 @@ class Category(models.Model):
         
     def save(self, *args, **kwargs):
         if not self.slug:
-            # Générer un slug de base à partir du nom
+           
             original_slug = slugify(self.name)
             
-            # Vérifier si ce slug existe déjà
+            
             queryset = Category.objects.all()
             if self.pk:
-                # Si c'est une mise à jour, exclure l'instance actuelle
                 queryset = queryset.exclude(pk=self.pk)
             
-            # Générer un slug unique en ajoutant un suffixe numérique si nécessaire
+          
             unique_slug = original_slug
             counter = 1
             
@@ -53,7 +52,7 @@ class Category(models.Model):
         return self.name
         
     def get_product_count(self):
-        return self.product_set.count()
+        return self.products.count()
 
 class Commande(models.Model):
     class Status(models.TextChoices):

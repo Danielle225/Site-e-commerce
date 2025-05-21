@@ -1,0 +1,85 @@
+<!-- templates/shopping/footer.html -->
+<footer class="bg-gray-800 text-white pt-12 pb-6">
+    <div class="container mx-auto px-4">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+            <!-- Company Info -->
+            <div>
+                <h3 class="text-lg font-bold mb-4">Notre Entreprise</h3>
+                <p class="text-gray-300 mb-4">Nous sommes dédiés à vous offrir les meilleurs produits au meilleur prix.</p>
+                <div class="flex space-x-4">
+                    <a href="#" class="text-gray-300 hover:text-white">
+                        <span class="fa-stack">
+                            <i class="fas fa-circle fa-stack-2x opacity-25"></i>
+                            <i class="fab fa-facebook-f fa-stack-1x"></i>
+                        </span>
+                    </a>
+                    <a href="#" class="text-gray-300 hover:text-white">
+                        <span class="fa-stack">
+                            <i class="fas fa-circle fa-stack-2x opacity-25"></i>
+                            <i class="fab fa-twitter fa-stack-1x"></i>
+                        </span>
+                    </a>
+                    <a href="#" class="text-gray-300 hover:text-white">
+                        <span class="fa-stack">
+                            <i class="fas fa-circle fa-stack-2x opacity-25"></i>
+                            <i class="fab fa-instagram fa-stack-1x"></i>
+                        </span>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Quick Links -->
+            <div>
+                <h3 class="text-lg font-bold mb-4">Liens Rapides</h3>
+                <ul class="space-y-2">
+                    <li><a href="#" class="text-gray-300 hover:text-white">Accueil</a></li>
+                    <li><a href="#" class="text-gray-300 hover:text-white">À propos</a></li>
+                    <li><a href="#" class="text-gray-300 hover:text-white">Boutique</a></li>
+                    <li><a href="#" class="text-gray-300 hover:text-white">Contact</a></li>
+                </ul>
+            </div>
+            
+            <!-- Customer Service -->
+            <div>
+                <h3 class="text-lg font-bold mb-4">Service Client</h3>
+                <ul class="space-y-2">
+                    <li><a href="#" class="text-gray-300 hover:text-white">FAQ</a></li>
+                    <li><a href="#" class="text-gray-300 hover:text-white">Livraison</a></li>
+                    <li><a href="#" class="text-gray-300 hover:text-white">Retours</a></li>
+                    <li><a href="#" class="text-gray-300 hover:text-white">Conditions générales</a></li>
+                </ul>
+            </div>
+            
+            <!-- Contact -->
+            <div>
+                <h3 class="text-lg font-bold mb-4">Contact</h3>
+                <ul class="space-y-2 text-gray-300">
+                    <li class="flex items-start">
+                        <i class="fas fa-map-marker-alt mt-1 mr-2"></i>
+                        <span>123 Rue du Commerce, 75000 Ville</span>
+                    </li>
+                    <li class="flex items-center">
+                        <i class="fas fa-phone-alt mr-2"></i>
+                        <span>+01 234 567 890</span>
+                    </li>
+                    <li class="flex items-center">
+                        <i class="fas fa-envelope mr-2"></i>
+                        <span>contact@example.com</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="border-t border-gray-700 mt-8 pt-6">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-400 text-sm">© {% now "Y" %} Votre Entreprise. Tous droits réservés.</p>
+                <div class="mt-4 md:mt-0">
+                    <p class="text-gray-400 text-sm">Paiement sécurisé | Visa | MasterCard | Mobile Money</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- Ajouter Font Awesome pour les icônes -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
