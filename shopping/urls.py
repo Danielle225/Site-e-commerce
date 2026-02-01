@@ -17,5 +17,6 @@ urlpatterns = [
     # path('category/<slug:slug>/', views.category_view, name='category'),
     path("category/<slug:slug>/", category_view, name="category"),
     path('category/<slug:category_slug>/product/<int:product_id>/', product_detail_by_category, name='product_detail_by_category'),
+    path('delete_category/<slug:slug>/', views.delete_category_view, name='delete_category'),
     path('product/<int:id>/', views.product_detail_view, name='product_detail')
 ]

@@ -2,104 +2,513 @@
 
 {% block content %}
 
-<!-- Search Section -->
-<div class="bg-white p-6 rounded-lg  mb-8">
-       <!-- Barre de recherche agrandie avec Tailwind -->
-        <form class="flex w-full max-w-3xl mx-auto" method='GET' action="{% url 'home'%}">
-        <input 
-            type="search" 
-            placeholder="Rechercher..." 
-            class="w-full h-14 px-4 py-2 text-lg border border-gray-300 rounded-l focus:outline-none focus:ring-0 shadow-none" for="default-search" id="default-search" name="name"
-        />
-        <button 
-            type="submit" 
-            class="bg-blue-500 hover:bg-blue-600 text-white px-6 h-14 text-lg rounded-r transition-colors" 
-        >
-            Rechercher
-        </button>
-        </form>
+<!-- Slider Hero Section -->
+<div class="relative w-full h-96 md:h-[500px] bg-white overflow-hidden">
+    <!-- Slider Container -->
+    <div class="slider-container relative h-full">
+        <!-- Slide 1: Nouveautés -->
+        <div class="slide active absolute inset-0 flex items-center transition-opacity duration-500">
+            <div class="absolute inset-0 bg-blue-600"></div>
+            <div class="relative z-10 w-full px-4">
+                <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center">
+                    <div class="text-center md:text-left md:w-1/2 mb-8 md:mb-0">
+                        <div class="mb-4 inline-block bg-yellow-400 text-blue-900 px-6 py-2 rounded-full font-bold text-sm flex items-center gap-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/>
+                                <path d="M5 3v4M3 5h4M19 17v4m-2-2h4"/>
+                            </svg>
+                            NOUVEAUTÉS
+                        </div>
+                        <h1 class="text-4xl md:text-5xl font-black text-white mb-4">
+                            Découvrez nos<br>Dernières Arrivages
+                        </h1>
+                        <p class="text-white text-lg md:text-xl mb-8">
+                            Les produits les plus récents et tendances vous attendent
+                        </p>
+                        <div class="flex gap-4 justify-center md:justify-start flex-wrap">
+                            <a href="#products" class="bg-yellow-400 hover:bg-yellow-500 text-blue-900 font-bold py-4 px-8 rounded-lg transition-all duration-200 shadow-lg">
+                                Voir les nouveautés
+                            </a>
+                            <a href="#categories" class="bg-white hover:bg-gray-100 text-blue-600 font-bold py-4 px-8 rounded-lg transition-all duration-200 shadow-lg">
+                                Parcourir tout
+                            </a>
+                        </div>
+                    </div>
+                    <div class="md:w-1/2 flex justify-center">
+                        <div class="relative">
+                            <div class="w-64 h-64 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
+                                <svg class="w-32 h-32 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
-<!-- Categories Section (Optional) -->
-<div id="categories" class="container mx-auto px-4 py-8 bg-gray-50">
-    <h2 class="text-2xl font-bold tracking-tight text-gray-900 mb-6 text-center">Nos Catégories</h2>
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-        {% for category in categories %}
-        <a href="{% url 'category' category.slug %}" class="bg-white rounded-lg shadow-md p-4 flex flex-col items-center hover:shadow-lg transition">
-            <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-3">
-                <i class="text-blue-600 {{ category.icon_class }}"></i>
+        <!-- Slide 2: Promotions -->
+        <div class="slide absolute inset-0 flex items-center transition-opacity duration-500 opacity-0">
+            <div class="absolute inset-0 bg-red-600"></div>
+            <div class="relative z-10 w-full px-4">
+                <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center">
+                    <div class="text-center md:text-left md:w-1/2 mb-8 md:mb-0">
+                        <div class="mb-4 inline-block bg-yellow-400 text-red-900 px-6 py-2 rounded-full font-bold text-sm flex items-center gap-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/>
+                            </svg>
+                            PROMOTIONS
+                        </div>
+                        <h1 class="text-4xl md:text-5xl font-black text-white mb-4">
+                            Jusqu'à -50%<br>sur une sélection
+                        </h1>
+                        <p class="text-white text-lg md:text-xl mb-8">
+                            Profitez de nos meilleures offres à durée limitée
+                        </p>
+                        <div class="flex gap-4 justify-center md:justify-start flex-wrap">
+                            <a href="#products" class="bg-yellow-400 hover:bg-yellow-500 text-red-900 font-bold py-4 px-8 rounded-lg transition-all duration-200 shadow-lg">
+                                Voir les promos
+                            </a>
+                            <a href="#categories" class="bg-white hover:bg-gray-100 text-red-600 font-bold py-4 px-8 rounded-lg transition-all duration-200 shadow-lg">
+                                Toutes les catégories
+                            </a>
+                        </div>
+                    </div>
+                    <div class="md:w-1/2 flex justify-center">
+                        <div class="relative">
+                            <div class="w-64 h-64 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
+                                <div class="text-center text-white">
+                                    <div class="text-6xl font-black">-50%</div>
+                                    <div class="text-xl font-bold">PROMO</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <h3 class="text-lg font-medium text-gray-800">{{ category.name }}</h3>
-        </a>
-        {% empty %}
-        <div class="col-span-4 text-center py-8 text-gray-500">Aucune catégorie disponible pour le moment</div>
-        {% endfor %}
+        </div>
+
+        <!-- Slide 3: Bienvenue -->
+        <div class="slide absolute inset-0 flex items-center transition-opacity duration-500 opacity-0">
+            <div class="absolute inset-0 bg-indigo-700"></div>
+            <div class="relative z-10 w-full px-4">
+                <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center">
+                    <div class="text-center md:text-left md:w-1/2 mb-8 md:mb-0">
+                        <div class="mb-4 inline-block bg-yellow-400 text-indigo-900 px-6 py-2 rounded-full font-bold text-sm flex items-center gap-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path d="M5.8 11.3 2 22l10.7-3.79M4 3h.01M22 8h.01M15 2h.01M22 20h.01"/>
+                                <path d="m7 15 5 5M12 9l4.5 4.5"/>
+                                <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4Z"/>
+                            </svg>
+                            BIENVENUE
+                        </div>
+                        <h1 class="text-4xl md:text-5xl font-black text-white mb-4">
+                            Bienvenue chez<br>Transit Shop
+                        </h1>
+                        <p class="text-white text-lg md:text-xl mb-8">
+                            Votre boutique en ligne de confiance pour tous vos achats
+                        </p>
+                        <div class="flex gap-4 justify-center md:justify-start flex-wrap">
+                            <a href="#products" class="bg-yellow-400 hover:bg-yellow-500 text-indigo-900 font-bold py-4 px-8 rounded-lg transition-all duration-200 shadow-lg">
+                                Découvrir
+                            </a>
+                            <a href="#categories" class="bg-white hover:bg-gray-100 text-indigo-600 font-bold py-4 px-8 rounded-lg transition-all duration-200 shadow-lg">
+                                Voir les catégories
+                            </a>
+                        </div>
+                    </div>
+                    <div class="md:w-1/2 flex justify-center">
+                        <div class="relative">
+                            <div class="w-64 h-64 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
+                                <svg class="w-32 h-32 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation Dots -->
+    <div class="absolute bottom-6 left-0 right-0 z-20 flex justify-center gap-3">
+        <button class="dot active w-3 h-3 rounded-full bg-white transition-all duration-300" data-slide="0"></button>
+        <button class="dot w-3 h-3 rounded-full bg-white bg-opacity-50 transition-all duration-300" data-slide="1"></button>
+        <button class="dot w-3 h-3 rounded-full bg-white bg-opacity-50 transition-all duration-300" data-slide="2"></button>
+    </div>
+
+    <!-- Navigation Arrows -->
+    <button class="prev-slide absolute left-4 top-1/2 -translate-y-1/2 z-20 bg-white bg-opacity-80 hover:bg-opacity-100 text-gray-800 w-12 h-12 rounded-full flex items-center justify-center transition-all duration-200 shadow-lg">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+        </svg>
+    </button>
+    <button class="next-slide absolute right-4 top-1/2 -translate-y-1/2 z-20 bg-white bg-opacity-80 hover:bg-opacity-100 text-gray-800 w-12 h-12 rounded-full flex items-center justify-center transition-all duration-200 shadow-lg">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+        </svg>
+    </button>
+</div>
+
+<script>
+// Slider functionality
+(function() {
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slide');
+    const dots = document.querySelectorAll('.dot');
+    const totalSlides = slides.length;
+    let autoplayInterval;
+
+    function showSlide(index) {
+        slides.forEach((slide, i) => {
+            slide.classList.remove('active');
+            slide.style.opacity = '0';
+            if (i === index) {
+                slide.classList.add('active');
+                slide.style.opacity = '1';
+            }
+        });
+
+        dots.forEach((dot, i) => {
+            dot.classList.remove('active');
+            dot.classList.remove('bg-white');
+            dot.classList.add('bg-white', 'bg-opacity-50');
+            if (i === index) {
+                dot.classList.add('active');
+                dot.classList.remove('bg-opacity-50');
+            }
+        });
+    }
+
+    function nextSlide() {
+        currentSlide = (currentSlide + 1) % totalSlides;
+        showSlide(currentSlide);
+    }
+
+    function prevSlide() {
+        currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+        showSlide(currentSlide);
+    }
+
+    function startAutoplay() {
+        autoplayInterval = setInterval(nextSlide, 5000);
+    }
+
+    function stopAutoplay() {
+        clearInterval(autoplayInterval);
+    }
+
+    // Event listeners
+    document.querySelector('.next-slide').addEventListener('click', () => {
+        stopAutoplay();
+        nextSlide();
+        startAutoplay();
+    });
+
+    document.querySelector('.prev-slide').addEventListener('click', () => {
+        stopAutoplay();
+        prevSlide();
+        startAutoplay();
+    });
+
+    dots.forEach((dot, index) => {
+        dot.addEventListener('click', () => {
+            stopAutoplay();
+            currentSlide = index;
+            showSlide(currentSlide);
+            startAutoplay();
+        });
+    });
+
+    // Start autoplay on load
+    startAutoplay();
+
+    // Pause autoplay on hover
+    document.querySelector('.slider-container').addEventListener('mouseenter', stopAutoplay);
+    document.querySelector('.slider-container').addEventListener('mouseleave', startAutoplay);
+})();
+</script>
+
+<!-- Categories Section -->
+<div id="categories" class="bg-gradient-to-b from-white to-gray-50 py-20 px-4">
+    <div class="container mx-auto max-w-7xl">
+        <div class="mb-16 text-center">
+            <div class="inline-block mb-4">
+                <span class="bg-blue-100 text-blue-600 px-4 py-2 rounded-full text-sm font-bold uppercase tracking-wider">Catégories</span>
+            </div>
+            <h2 class="text-5xl font-black text-gray-900 mb-4">Explorez Nos Catégories</h2>
+            <p class="text-gray-600 text-xl max-w-2xl mx-auto">Découvrez notre sélection organisée pour faciliter vos achats</p>
+        </div>
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+            {% for category in categories %}
+            <a href="{% url 'category' category.slug %}" class="group">
+                <div class="bg-white rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-500 overflow-hidden border-4 border-transparent hover:border-blue-600 transform hover:scale-105 hover:-rotate-1">
+                    <div class="p-8 flex flex-col items-center text-center">
+                        <!-- Icon Container -->
+                        <div class="relative mb-6">
+                            <div class="absolute inset-0 bg-blue-600 rounded-full blur-xl opacity-30 group-hover:opacity-50 transition-opacity"></div>
+                            <div class="relative w-32 h-32 bg-blue-600 rounded-full flex items-center justify-center group-hover:bg-blue-700 transition-all transform group-hover:rotate-12 group-hover:scale-110 shadow-2xl">
+                                <!-- Icônes Lucide selon la catégorie -->
+                                {% if 'robe' in category.name|lower or 'dress' in category.name|lower %}
+                                    <!-- Shirt icon (robe) -->
+                                    <svg class="w-16 h-16 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                        <path d="M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"/>
+                                    </svg>
+                                {% elif 'chaussure' in category.name|lower or 'shoe' in category.name|lower or 'soulier' in category.name|lower %}
+                                    <!-- Footprints icon (chaussures) -->
+                                    <svg class="w-16 h-16 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                        <path d="M4 16v-2.38C4 11.5 2.97 10.5 3 8c.03-2.72 1.49-6 4.5-6C9.37 2 10 3.8 10 5.5c0 3.11-2 5.66-2 8.68V16a2 2 0 1 1-4 0Z"/>
+                                        <path d="M20 20v-2.38c0-2.12 1.03-3.12 1-5.62-.03-2.72-1.49-6-4.5-6C14.63 6 14 7.8 14 9.5c0 3.11 2 5.66 2 8.68V20a2 2 0 1 0 4 0Z"/>
+                                    </svg>
+                                {% elif 'sac' in category.name|lower or 'bag' in category.name|lower %}
+                                    <!-- ShoppingBag icon (sacs) -->
+                                    <svg class="w-16 h-16 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                        <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/>
+                                        <path d="M3 6h18"/>
+                                        <path d="M16 10a4 4 0 0 1-8 0"/>
+                                    </svg>
+                                {% elif 'bijou' in category.name|lower or 'jewelry' in category.name|lower or 'accessoire' in category.name|lower %}
+                                    <!-- Gem icon (bijoux) -->
+                                    <svg class="w-16 h-16 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                        <path d="M6 3h12l4 6-10 13L2 9Z"/>
+                                        <path d="M11 3 8 9l4 13 4-13-3-6"/>
+                                        <path d="M2 9h20"/>
+                                    </svg>
+                                {% elif 'vetement' in category.name|lower or 'vêtement' in category.name|lower or 'habit' in category.name|lower %}
+                                    <!-- Shirt icon (vêtements) -->
+                                    <svg class="w-16 h-16 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                        <path d="M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"/>
+                                    </svg>
+                                {% elif 'montre' in category.name|lower or 'watch' in category.name|lower %}
+                                    <!-- Watch icon (montres) -->
+                                    <svg class="w-16 h-16 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                        <circle cx="12" cy="12" r="6"/>
+                                        <polyline points="12 10 12 12 13 13"/>
+                                        <path d="m16.13 7.66-.81-4.05a2 2 0 0 0-2-1.61h-2.68a2 2 0 0 0-2 1.61l-.78 4.05"/>
+                                        <path d="m7.88 16.36.8 4a2 2 0 0 0 2 1.61h2.72a2 2 0 0 0 2-1.61l.81-4.05"/>
+                                    </svg>
+                                {% elif 'electronique' in category.name|lower or 'electronic' in category.name|lower or 'tech' in category.name|lower %}
+                                    <!-- Smartphone icon (électronique) -->
+                                    <svg class="w-16 h-16 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                        <rect width="14" height="20" x="5" y="2" rx="2" ry="2"/>
+                                        <path d="M12 18h.01"/>
+                                    </svg>
+                                {% elif 'sport' in category.name|lower %}
+                                    <!-- Dumbbell icon (sport) -->
+                                    <svg class="w-16 h-16 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                        <path d="m6.5 6.5 11 11"/>
+                                        <path d="m21 21-1-1"/>
+                                        <path d="m3 3 1 1"/>
+                                        <path d="m18 22 4-4"/>
+                                        <path d="m2 6 4-4"/>
+                                        <path d="m3 10 7-7"/>
+                                        <path d="m14 21 7-7"/>
+                                    </svg>
+                                {% elif 'beauté' in category.name|lower or 'beaute' in category.name|lower or 'beauty' in category.name|lower or 'cosmetic' in category.name|lower %}
+                                    <!-- Sparkles icon (beauté) -->
+                                    <svg class="w-16 h-16 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                        <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/>
+                                        <path d="M5 3v4"/>
+                                        <path d="M19 17v4"/>
+                                        <path d="M3 5h4"/>
+                                        <path d="M17 19h4"/>
+                                    </svg>
+                                {% elif 'maison' in category.name|lower or 'home' in category.name|lower or 'décor' in category.name|lower %}
+                                    <!-- Home icon (maison) -->
+                                    <svg class="w-16 h-16 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                        <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                                        <polyline points="9 22 9 12 15 12 15 22"/>
+                                    </svg>
+                                {% else %}
+                                    <!-- ShoppingCart icon (par défaut) -->
+                                    <svg class="w-16 h-16 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                        <circle cx="8" cy="21" r="1"/>
+                                        <circle cx="19" cy="21" r="1"/>
+                                        <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/>
+                                    </svg>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <!-- Category Name -->
+                        <h3 class="text-xl font-black text-gray-900 group-hover:text-blue-600 transition-colors mb-2">
+                            {{ category.name }}
+                        </h3>
+                        
+                        <!-- Action Text -->
+                        <div class="flex items-center gap-2 text-blue-600 font-bold text-sm group-hover:gap-4 transition-all">
+                            <span>Découvrir</span>
+                            <svg class="w-4 h-4 transform group-hover:translate-x-2 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </a>
+            {% empty %}
+            <div class="col-span-full text-center py-20">
+                <div class="inline-block p-8 bg-gray-100 rounded-3xl">
+                    <svg class="w-20 h-20 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"/>
+                    </svg>
+                    <p class="text-gray-500 text-xl font-semibold">Aucune catégorie disponible pour le moment</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
     </div>
 </div>
 
 <!-- Products Section -->
-<div class="container mx-auto px-4 py-8">
-    <h2 class="text-2xl font-bold tracking-tight text-gray-900 mb-6">Nos Produits</h2>
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {% for product in products %}
-        <div class="bg-white rounded-lg shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden">
-            <div class="relative h-56 overflow-hidden">
-                <img src="{{ product.image_url }}" alt="{{ product.name }}" class="w-full h-full object-cover object-center" />
-                {% if product.discount %}
-                <span class="absolute top-2 right-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">-{{ product.discount }}%</span>
-                {% endif %}
+<div id="products" class="bg-white py-20 px-4">
+    <div class="container mx-auto max-w-7xl">
+        <!-- Section Header -->
+        <div class="mb-16 text-center">
+            <div class="inline-block mb-4">
+                <span class="bg-green-100 text-green-600 px-4 py-2 rounded-full text-sm font-bold uppercase tracking-wider">Produits</span>
             </div>
-            <div class="p-4">
-                <h3 class="text-lg font-semibold text-gray-800 mb-1">
-                    <a href="{{ product.pk }}">
-                        {{ product.name }}
-                    </a>
-                </h3>
-                <p class="text-sm text-gray-500 mb-2 line-clamp-2 h-10">{{ product.description }}</p>
-                <p class="text-lg font-medium text-gray-900">{{ product.price }} FCFA</p>
-                <div class="mt-4 flex space-x-2">
-                    <a href="{{product.pk}}" class="flex-1 text-center bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md text-sm font-medium transition-colors">
-                        Voir Détails
-                    </a>
-                    <button id="{{product.pk}}" data-name="{{product.name}}" data-price="{{product.price}}" class="add-to-cart flex-1 text-center bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-md text-sm font-medium transition-colors">
-                        <span class="hidden md:inline">Ajouter au Panier</span>
-                        <span class="md:hidden">+ Panier</span>
-                    </button>
+            <h2 class="text-5xl font-black text-gray-900 mb-4">Nos Meilleurs Produits</h2>
+            <p class="text-gray-600 text-xl max-w-2xl mx-auto">Une sélection de produits de qualité aux meilleurs prix</p>
+        </div>
+
+        <!-- Products Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+            {% for product in products %}
+            <div class="group">
+                <div class="bg-white rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-500 overflow-hidden border-2 border-gray-100 hover:border-blue-600 transform hover:-translate-y-3 h-full flex flex-col">
+                    <!-- Image Container -->
+                    <div class="relative h-72 overflow-hidden bg-gray-100">
+                        <img src="{{ product.image_url }}" 
+                             alt="{{ product.name }}" 
+                             class="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-500" />
+                        
+                        <!-- Discount Badge -->
+                        {% if product.discount %}
+                        <div class="absolute top-4 right-4">
+                            <div class="bg-red-600 text-white px-4 py-2 rounded-full shadow-2xl">
+                                <span class="text-lg font-black">-{{ product.discount }}%</span>
+                            </div>
+                        </div>
+                        {% endif %}
+                        
+                        <!-- Hover Overlay -->
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                        
+                        <!-- Quick View Badge -->
+                        <div class="absolute top-4 left-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                            <span class="bg-white/90 backdrop-blur-sm text-gray-900 px-3 py-1 rounded-full text-xs font-bold">
+                                Voir détails
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Content -->
+                    <div class="p-6 flex flex-col flex-grow">
+                        <!-- Product Name -->
+                        <h3 class="text-xl font-black text-gray-900 mb-3 line-clamp-2 group-hover:text-blue-600 transition-colors min-h-[3.5rem]">
+                            <a href="{{ product.pk }}">{{ product.name }}</a>
+                        </h3>
+                        
+                        <!-- Description -->
+                        <p class="text-sm text-gray-600 mb-4 line-clamp-2 flex-grow">{{ product.description }}</p>
+                        
+                        <!-- Price Section -->
+                        <div class="mb-5 pb-5 border-b-2 border-gray-100">
+                            <div class="flex items-baseline gap-2">
+                                <p class="text-4xl font-black text-blue-600">{{ product.price }}</p>
+                                <span class="text-xl font-bold text-gray-500">FCFA</span>
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="flex gap-3">
+                            <a href="{{product.pk}}" 
+                               class="flex-1 text-center bg-blue-600 hover:bg-blue-700 text-white py-4 px-4 rounded-xl font-bold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 flex items-center justify-center gap-2">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                                </svg>
+                                <span class="hidden sm:inline">Voir</span>
+                            </a>
+                            <button id="{{product.pk}}" 
+                                    data-name="{{product.name}}" 
+                                    data-price="{{product.price}}" 
+                                    class="add-to-cart flex-1 text-center bg-green-600 hover:bg-green-700 text-white py-4 px-4 rounded-xl font-bold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 flex items-center justify-center gap-2">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
+                                </svg>
+                                <span class="hidden md:inline">Ajouter</span>
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
+            {% empty %}
+            <div class="col-span-full text-center py-20">
+                <div class="inline-block p-12 bg-gray-100 rounded-3xl">
+                    <svg class="w-24 h-24 text-gray-400 mx-auto mb-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"/>
+                    </svg>
+                    <p class="text-gray-500 text-2xl font-bold mb-2">Aucun produit disponible</p>
+                    <p class="text-gray-400 text-lg">Revenez bientôt pour découvrir nos nouveautés</p>
+                </div>
+            </div>
+            {% endfor %}
         </div>
-        {% empty %}
-        <div class="col-span-4 text-center py-12 text-gray-500">Aucun produit disponible pour le moment</div>
-        {% endfor %}
     </div>
 </div>
 
 <!-- Pagination -->
-<div class="flex justify-center mt-6 mb-12">
-    <ul class="pagination flex space-x-2">
-        {% if products.has_previous %}
-            <li>
-                <a class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded-md transition" href="?page=1">Premier</a>
-            </li>
-            <li>
-                <a class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded-md transition" href="?page={{ products.previous_page_number }}">Précédent</a>
-            </li>
-        {% endif %}
+{% if products.paginator.num_pages > 1 %}
+<div class="bg-gradient-to-b from-white to-gray-50 py-12 px-4">
+    <div class="container mx-auto max-w-7xl">
+        <div class="flex flex-wrap gap-4 justify-center items-center">
+            {% if products.has_previous %}
+                <a href="?page=1" class="bg-white hover:bg-blue-600 hover:text-white text-gray-700 px-6 py-3 rounded-xl border-2 border-gray-300 hover:border-blue-600 transition-all font-bold transform hover:scale-105 shadow-lg hover:shadow-xl">
+                    <span class="flex items-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 19l-7-7 7-7m8 14l-7-7 7-7"/>
+                        </svg>
+                        <span>Première</span>
+                    </span>
+                </a>
+                <a href="?page={{ products.previous_page_number }}" class="bg-white hover:bg-blue-600 hover:text-white text-gray-700 px-6 py-3 rounded-xl border-2 border-gray-300 hover:border-blue-600 transition-all font-bold transform hover:scale-105 shadow-lg hover:shadow-xl">
+                    <span class="flex items-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                        </svg>
+                        <span>Précédente</span>
+                    </span>
+                </a>
+            {% endif %}
 
-        <li class="bg-blue-500 text-white px-4 py-2 rounded-md">
-            Page {{ products.number }} sur {{ products.paginator.num_pages }}
-        </li>
+            <div class="bg-blue-600 text-white px-8 py-3 rounded-xl font-black text-lg shadow-xl">
+                Page {{ products.number }} / {{ products.paginator.num_pages }}
+            </div>
 
-        {% if products.has_next %}
-            <li>
-                <a class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded-md transition" href="?page={{ products.next_page_number }}">Suivant</a>
-            </li>
-            <li>
-                <a class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded-md transition" href="?page={{ products.paginator.num_pages }}">Dernier</a>
-            </li>
-        {% endif %}
-    </ul>
+            {% if products.has_next %}
+                <a href="?page={{ products.next_page_number }}" class="bg-white hover:bg-blue-600 hover:text-white text-gray-700 px-6 py-3 rounded-xl border-2 border-gray-300 hover:border-blue-600 transition-all font-bold transform hover:scale-105 shadow-lg hover:shadow-xl">
+                    <span class="flex items-center gap-2">
+                        <span>Suivante</span>
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                        </svg>
+                    </span>
+                </a>
+                <a href="?page={{ products.paginator.num_pages }}" class="bg-white hover:bg-blue-600 hover:text-white text-gray-700 px-6 py-3 rounded-xl border-2 border-gray-300 hover:border-blue-600 transition-all font-bold transform hover:scale-105 shadow-lg hover:shadow-xl">
+                    <span class="flex items-center gap-2">
+                        <span>Dernière</span>
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7"/>
+                        </svg>
+                    </span>
+                </a>
+            {% endif %}
+        </div>
+    </div>
 </div>
+{% endif %}
 
 <!-- Include Footer -->
 {% include "shopping/footer.html" %}
@@ -107,6 +516,25 @@
 {%block js%}
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script type="text/javascript">
+    // Add animations to HTML
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.8s ease-out;
+        }
+    `;
+    document.head.appendChild(style);
+
     $(function(){
         // Tableau pour stocker les articles du panier
         var panier = [];
@@ -198,11 +626,13 @@
             
             // Afficher une notification visuelle que l'article a été ajouté
             Swal.fire({
-                title: 'Produit ajouté au panier!',
+                title: 'Succès!',
                 text: productName + ' a été ajouté à votre panier',
                 icon: 'success',
                 timer: 1500,
-                showConfirmButton: false
+                showConfirmButton: false,
+                background: '#fff',
+                backdrop: 'rgba(0,0,0,0.4)'
             });
         });
         
@@ -238,21 +668,41 @@
                 $contenuPanier.empty();
                 
                 if (panier.length === 0) {
-                    $contenuPanier.append('<li class="py-2 text-center">Votre panier est vide</li>');
+                    $contenuPanier.append(
+                        '<li class="text-center py-8">' +
+                            '<svg class="w-16 h-16 mx-auto text-gray-300 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">' +
+                                '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>' +
+                            '</svg>' +
+                            '<p class="text-gray-500 font-semibold">Votre panier est vide</p>' +
+                        '</li>'
+                    );
                     $('#proceed-to-checkout').addClass('opacity-50 cursor-not-allowed').prop('disabled', true);
                 } else {
                     for (var i = 0; i < panier.length; i++) {
                         var item = panier[i];
                         if (item && item.id && item.name && typeof item.price === 'number' && typeof item.quantity === 'number') {
                             $contenuPanier.append(
-                                '<li class="py-2 border-b flex justify-between">' +
-                                    '<div>' +
-                                        '<span class="font-medium">' + item.name + '</span>' +
-                                        '<div class="text-xs text-gray-500">Quantité: ' + item.quantity + '</div>' +
-                                    '</div>' +
-                                    '<div class="text-right">' +
-                                        '<div class="font-medium">' + (item.price * item.quantity).toFixed(2) + ' FCFA</div>' +
-                                        '<button class="text-red-500 text-xs remove-item" data-id="' + item.id + '">Retirer</button>' +
+                                '<li class="bg-gradient-to-r from-gray-50 to-blue-50 rounded-xl p-3 mb-2 border border-gray-200 hover:shadow-lg transition-all duration-300">' +
+                                    '<div class="flex justify-between items-start">' +
+                                        '<div class="flex-1">' +
+                                            '<span class="font-bold text-gray-900 block mb-1">' + item.name + '</span>' +
+                                            '<div class="flex items-center gap-2">' +
+                                                '<span class="bg-blue-600 text-white text-xs font-bold px-2 py-1 rounded-full">Qté: ' + item.quantity + '</span>' +
+                                                '<span class="text-sm text-gray-600">×</span>' +
+                                                '<span class="text-sm text-gray-600 font-semibold">' + item.price + ' FCFA</span>' +
+                                            '</div>' +
+                                        '</div>' +
+                                        '<div class="text-right ml-3">' +
+                                            '<div class="font-black text-lg bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent mb-2">' + 
+                                                (item.price * item.quantity).toFixed(0) + ' FCFA' +
+                                            '</div>' +
+                                            '<button class="text-red-600 hover:text-red-700 text-xs font-bold px-3 py-1 bg-red-100 hover:bg-red-200 rounded-lg transition-colors remove-item flex items-center gap-1" data-id="' + item.id + '">' +
+                                                '<svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">' +
+                                                    '<path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"/>' +
+                                                '</svg>' +
+                                                'Retirer' +
+                                            '</button>' +
+                                        '</div>' +
                                     '</div>' +
                                 '</li>'
                             );
@@ -261,9 +711,11 @@
                     
                     // Ajouter le total
                     $contenuPanier.append(
-                        '<li class="py-2 font-bold flex justify-between">' +
-                            '<span>Total:</span>' +
-                            '<span>' + totalPrice.toFixed(2) + ' FCFA</span>' +
+                        '<li class="bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl p-4 mt-3 shadow-lg">' +
+                            '<div class="flex justify-between items-center">' +
+                                '<span class="font-bold text-lg">Total:</span>' +
+                                '<span class="font-black text-2xl">' + totalPrice.toFixed(0) + ' FCFA</span>' +
+                            '</div>' +
                         '</li>'
                     );
                     

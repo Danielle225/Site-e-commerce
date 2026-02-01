@@ -3,107 +3,227 @@
 {% block title %}{{ product.name }} - {{ category.name }}{% endblock %}
     
 {% block content %}
-<div class="container mx-auto px-4 my-8 bg-white min-h-screen">
-    <!-- Fil d'Ariane -->
-    <nav class="mb-6">
-        <ol class="flex flex-wrap text-sm">
-            <li class="flex items-center">
-                <a href="{% url 'home' %}" class="text-blue-600 hover:text-blue-800">Accueil</a>
-                <span class="mx-2">/</span>
-            </li>
-            {% if category %}
-            <li class="flex items-center">
-                <a href="{% url 'category' category.slug %}" class="text-blue-600 hover:text-blue-800">{{ category.name }}</a>
-                <span class="mx-2">/</span>
-            </li>
-            {% endif %}
-            <li class="text-gray-500" aria-current="page">{{ product.name }}</li>
-        </ol>
-    </nav>
-
-    <!-- Product Section -->
-    <div class="flex flex-col md:flex-row gap-8">
-        <!-- Left Column - Product Image -->
-        <div class="w-full md:w-2/5">
-            <div class="border border-gray-200 rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow">
-                <img src="{{ product.image_url }}" alt="{{ product.name }}" class="w-full h-auto object-cover">
-            </div>
-        </div>
-        
-        <!-- Right Column - Product Info -->
-        <div class="w-full md:w-3/5">
-            <h1 class="text-2xl md:text-3xl font-bold mb-2">{{ product.name }}</h1>
-            
-            {% if category %}
-            <p class="text-gray-500 mb-3">Catégorie: <a href="{% url 'category' category.slug %}" class="text-blue-600 hover:text-blue-800">{{ category.name }}</a></p>
-            {% endif %}
-            
-            <h2 class="text-2xl font-bold text-red-600 mb-4">{{ product.price }} FCFA</h2>
-            
-            <div class="mb-6">
-                <h3 class="text-lg font-semibold mb-2">Description</h3>
-                <div class="text-gray-700">{{ product.description|linebreaks }}</div>
-            </div>
-            
-            <div class="mb-4">
-                <div class="flex items-center text-sm text-green-600 mb-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+<!-- Fil d'Ariane -->
+<div class="bg-gray-50 border-b border-gray-200">
+    <div class="container mx-auto px-4 py-4 max-w-7xl">
+        <nav>
+            <ol class="flex flex-wrap items-center text-sm">
+                <li class="flex items-center">
+                    <a href="{% url 'home' %}" class="text-blue-600 hover:text-blue-800 font-medium flex items-center gap-1">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+                        </svg>
+                        Accueil
+                    </a>
+                    <svg class="w-4 h-4 mx-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
                     </svg>
-                    <span>En stock</span>
+                </li>
+                {% if category %}
+                <li class="flex items-center">
+                    <a href="{% url 'category' category.slug %}" class="text-blue-600 hover:text-blue-800 font-medium">{{ category.name }}</a>
+                    <svg class="w-4 h-4 mx-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                    </svg>
+                </li>
+                {% endif %}
+                <li class="text-gray-700 font-semibold" aria-current="page">{{ product.name }}</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+<!-- Product Section -->
+<div class="bg-white py-8">
+    <div class="container mx-auto px-4 max-w-4xl">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+            <!-- Left Column - Product Image -->
+            <div class="space-y-4">
+                <div class="bg-white border-2 border-gray-200 rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-500 sticky top-4">
+                    <div class="aspect-square bg-gray-100">
+                        <img src="{{ product.image_url }}" alt="{{ product.name }}" class="w-full h-full object-cover">
+                    </div>
                 </div>
-                <div class="text-sm text-gray-700">Livraison disponible</div>
             </div>
             
-            <!-- Add to Cart Section -->
-            <div class="border border-gray-200 rounded-lg p-4 bg-gray-50 mb-6">
-                <div class="mb-4">
-                    <label for="quantity" class="block text-sm font-medium text-gray-700 mb-1">Quantité</label>
-                    <select id="quantity" class="border border-gray-300 rounded-md py-2 px-3 w-24 focus:ring-blue-500 focus:border-blue-500">
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                    </select>
+            <!-- Right Column - Product Info -->
+            <div class="space-y-6">
+                <!-- Category Badge -->
+                {% if category %}
+                <div>
+                    <a href="{% url 'category' category.slug %}" class="inline-flex items-center gap-2 bg-blue-100 text-blue-700 px-4 py-2 rounded-full text-sm font-bold hover:bg-blue-200 transition-colors">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/>
+                        </svg>
+                        {{ category.name }}
+                    </a>
+                </div>
+                {% endif %}
+                
+                <!-- Product Title -->
+                <h1 class="text-4xl md:text-5xl font-black text-gray-900 leading-tight">{{ product.name }}</h1>
+                
+                <!-- Price -->
+                <div class="bg-white border-2 border-gray-200 rounded-2xl p-6 shadow-lg">
+                    <div class="flex items-baseline gap-3">
+                        <span class="text-5xl font-black text-blue-600">{{ product.price }}</span>
+                        <span class="text-2xl font-bold text-gray-500">FCFA</span>
+                    </div>
                 </div>
                 
-                <button id="{{product.pk}}" data-name="{{product.name}}" data-price="{{product.price}}" class="ted w-full bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-medium py-2 px-4 rounded-md shadow transition-colors focus:outline-none focus:ring-2 focus:ring-yellow-300 mb-2">
-                    Ajouter au panier
-                </button>
+                <!-- Stock & Delivery Info -->
+                <div class="flex flex-wrap gap-4">
+                    <div class="flex items-center gap-2 bg-green-100 text-green-700 px-4 py-3 rounded-xl font-bold">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                        </svg>
+                        <span>En stock</span>
+                    </div>
+                    <div class="flex items-center gap-2 bg-orange-100 text-orange-700 px-4 py-3 rounded-xl font-bold">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0"/>
+                        </svg>
+                        <span>Livraison disponible</span>
+                    </div>
+                </div>
                 
-                <button class="w-full bg-orange-400 hover:bg-orange-500 text-gray-900 font-medium py-2 px-4 rounded-md shadow transition-colors focus:outline-none focus:ring-2 focus:ring-orange-300">
-                    Acheter maintenant
-                </button>
-            </div>
-            
-            <!-- Informations supplémentaires -->
-            <div class="border-t border-gray-200 pt-4">
-                <p class="text-sm mb-1"><span class="font-medium">Référence produit:</span> #{{ product.id }}</p>
-                <p class="text-sm"><span class="font-medium">Disponibilité:</span> <span class="text-green-600">En stock</span></p>
+                <!-- Description -->
+                <div class="bg-gray-50 rounded-2xl p-6 border-2 border-gray-200">
+                    <h3 class="text-xl font-black text-gray-900 mb-4 flex items-center gap-2">
+                        <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                        Description
+                    </h3>
+                    <div class="text-gray-700 leading-relaxed text-lg">{{ product.description|linebreaks }}</div>
+                </div>
+                
+                <!-- Add to Cart Section -->
+                <div class="bg-white border-2 border-gray-200 rounded-3xl p-8 shadow-xl space-y-6">
+                    <!-- Quantity Selector -->
+                    <div>
+                        <label for="quantity" class="block text-lg font-bold text-gray-900 mb-3">Quantité</label>
+                        <div class="flex items-center gap-4">
+                            <select id="quantity" class="border-2 border-gray-300 rounded-xl py-3 px-4 text-lg font-bold focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                                <option value="7">7</option>
+                                <option value="8">8</option>
+                                <option value="9">9</option>
+                                <option value="10">10</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <!-- Action Buttons -->
+                    <div class="space-y-3">
+                        <button id="{{product.pk}}" data-name="{{product.name}}" data-price="{{product.price}}" class="ted w-full bg-green-600 hover:bg-green-700 text-white font-black py-5 px-6 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 flex items-center justify-center gap-3 text-lg">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
+                            </svg>
+                            <span>Ajouter au panier</span>
+                        </button>
+                        
+                        <button class="w-full bg-blue-600 hover:bg-blue-700 text-white font-black py-5 px-6 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 flex items-center justify-center gap-3 text-lg">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                            </svg>
+                            <span>Acheter maintenant</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Product Details -->
+                <div class="bg-gray-50 rounded-2xl p-6 border-2 border-gray-200 space-y-3">
+                    <div class="flex items-center justify-between py-2 border-b border-gray-300">
+                        <span class="font-bold text-gray-700">Référence produit:</span>
+                        <span class="font-black text-gray-900">#{{ product.id }}</span>
+                    </div>
+                    <div class="flex items-center justify-between py-2">
+                        <span class="font-bold text-gray-700">Disponibilité:</span>
+                        <span class="flex items-center gap-2 font-black text-green-600">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                            </svg>
+                            En stock
+                        </span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
+</div>
     
-    <!-- Produits similaires - Visible uniquement si similar_products existe -->
+    <!-- Produits similaires -->
     {% if similar_products %}
-    <div class="mt-12">
-        <h3 class="text-xl font-bold mb-6 pb-2 border-b border-gray-200">Produits similaires{% if category %} dans la catégorie {{ category.name }}{% endif %}</h3>
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {% for similar_product in similar_products %}
-                {% if similar_product.id != product.id %}
-                    <div class="border border-gray-200 rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow">
-                        <div class="aspect-w-1 aspect-h-1 w-full overflow-hidden">
-                            <img src="{{ similar_product.image_url }}" class="w-full h-48 object-cover" alt="{{ similar_product.name }}">
-                        </div>
-                        <div class="p-4">
-                            <h5 class="text-gray-900 font-medium text-base mb-2 truncate">{{ similar_product.name }}</h5>
-                            <p class="text-red-600 font-bold mb-3">{{ similar_product.price }} FCFA</p>
-                            <a href="{% url 'product_detail_by_category' category.slug similar_product.id %}" class="block text-center bg-gray-100 hover:bg-gray-200 text-gray-900 font-medium py-2 px-4 rounded transition-colors">Voir le produit</a>
+    <div class="bg-white py-16">
+        <div class="container mx-auto px-4 max-w-7xl">
+            <div class="mb-12 text-center">
+                <div class="inline-block mb-4">
+                    <span class="bg-blue-100 text-blue-600 px-4 py-2 rounded-full text-sm font-bold uppercase tracking-wider">Découvrez aussi</span>
+                </div>
+                <h3 class="text-4xl font-black text-gray-900 mb-3">
+                    Produits similaires{% if category %} dans {{ category.name }}{% endif %}
+                </h3>
+                <p class="text-gray-600 text-lg">D'autres produits qui pourraient vous intéresser</p>
+            </div>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                {% for similar_product in similar_products %}
+                    {% if similar_product.id != product.id %}
+                    <div class="group">
+                        <div class="bg-white rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-500 overflow-hidden border-2 border-gray-100 hover:border-blue-600 transform hover:-translate-y-3 h-full flex flex-col">
+                            <!-- Image Container -->
+                            <div class="relative h-72 overflow-hidden bg-gray-100">
+                                <img src="{{ similar_product.image_url }}" 
+                                     alt="{{ similar_product.name }}" 
+                                     class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                                
+                                <!-- Hover Overlay -->
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                                
+                                <!-- Quick View Badge -->
+                                <div class="absolute top-4 left-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                                    <span class="bg-white/90 backdrop-blur-sm text-gray-900 px-3 py-1 rounded-full text-xs font-bold">
+                                        Voir détails
+                                    </span>
+                                </div>
+                            </div>
+                            
+                            <!-- Content -->
+                            <div class="p-6 flex flex-col flex-grow">
+                                <!-- Product Name -->
+                                <h5 class="text-xl font-black text-gray-900 mb-3 line-clamp-2 group-hover:text-blue-600 transition-colors min-h-[3.5rem]">
+                                    {{ similar_product.name }}
+                                </h5>
+                                
+                                <!-- Price -->
+                                <div class="mb-5 pb-5 border-b-2 border-gray-100">
+                                    <div class="flex items-baseline gap-2">
+                                        <p class="text-4xl font-black text-blue-600">{{ similar_product.price }}</p>
+                                        <span class="text-xl font-bold text-gray-500">FCFA</span>
+                                    </div>
+                                </div>
+                                
+                                <!-- View Button -->
+                                <a href="{% url 'product_detail_by_category' category.slug similar_product.id %}" 
+                                   class="w-full text-center bg-blue-600 hover:bg-blue-700 text-white py-4 px-4 rounded-xl font-bold transition-all duration-300 shadow-lg hover:shadow-xl flex items-center justify-center gap-2">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                                    </svg>
+                                    <span>Voir le produit</span>
+                                </a>
+                            </div>
                         </div>
                     </div>
-                {% endif %}
-            {% endfor %}
+                    {% endif %}
+                {% endfor %}
+            </div>
         </div>
     </div>
     {% endif %}
@@ -112,26 +232,6 @@
 
 {% block js %}
 <script type="text/javascript">
-    console.log('juste pour tester');
-    if(localStorage.getItem('panier')== null){
-        var panier = {};
-    }else{
-        panier = JSON.parse(localStorage.getItem('panier'));
-    }
-    $(document).on('click','.ted',function(){
-        console.log('ajouter');
-        var item_id = this.id.toString();
-        console.log(item_id)
-        if (panier[item_id] != undefined ){
-            panier[item_id] = panier[item_id] +1;
-        }else{
-            panier[item_id] = 1;
-        }
-        console.log(panier);
-        localStorage.setItem('panier',JSON.stringify(panier));
-        document.getElementById("panier").innerHTML = "panier("+ Object.keys(panier).length +")";
-       
-    })
     $(function(){
         // Tableau pour stocker les articles du panier
         var panier = [];
@@ -236,71 +336,62 @@
             
             // Mettre à jour les affichages du panier
             if ($('#cart-count').length) $('#cart-count').text(totalItems);
+            if ($('#cart-count-mobile').length) $('#cart-count-mobile').text(totalItems);
             if ($('#panier-badge').length) $('#panier-badge').text(totalItems + ' article(s)');
-            if ($('#panier').length) $('#panier').text("Panier (" + totalItems + ")");
             
-            // Vider et remplir la liste des articles
-            var $contenuPanier = $('#contenu-panier');
-            if ($contenuPanier.length) {
-                $contenuPanier.empty();
+            // Mettre à jour le modal du panier
+            var contenuPanier = document.getElementById('contenu-panier');
+            if (contenuPanier) {
+                contenuPanier.innerHTML = '';
                 
                 if (panier.length === 0) {
-                    $contenuPanier.append('<li class="py-2 text-center">Votre panier est vide</li>');
-                    $('#proceed-to-checkout').addClass('opacity-50 cursor-not-allowed').prop('disabled', true);
+                    contenuPanier.innerHTML = '<div class="text-center py-8"><svg class="w-16 h-16 mx-auto text-gray-300 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg><p class="text-gray-500 font-semibold">Votre panier est vide</p></div>';
                 } else {
                     for (var i = 0; i < panier.length; i++) {
                         var item = panier[i];
                         if (item && item.id && item.name && typeof item.price === 'number' && typeof item.quantity === 'number') {
-                            $contenuPanier.append(
-                                '<li class="py-2 border-b flex justify-between">' +
-                                    '<div>' +
-                                        '<span class="font-medium">' + item.name + '</span>' +
-                                        '<div class="text-xs text-gray-500">Quantité: ' + item.quantity + '</div>' +
+                            var itemElement = document.createElement('div');
+                            itemElement.className = 'bg-gray-50 rounded-lg p-3 mb-2 border border-gray-200';
+                            itemElement.innerHTML = 
+                                '<div class="flex justify-between items-start">' +
+                                    '<div class="flex-1">' +
+                                        '<span class="font-bold text-gray-900 block mb-1">' + item.name + '</span>' +
+                                        '<span class="text-sm text-gray-600">' + item.price + ' FCFA x ' + item.quantity + '</span>' +
                                     '</div>' +
                                     '<div class="text-right">' +
-                                        '<div class="font-medium">' + (item.price * item.quantity).toFixed(2) + ' FCFA</div>' +
-                                        '<button class="text-red-500 text-xs remove-item" data-id="' + item.id + '">Retirer</button>' +
+                                        '<span class="font-bold text-blue-600">' + (item.price * item.quantity).toFixed(0) + ' FCFA</span>' +
+                                        '<button onclick="removeFromCart(\'' + item.id + '\')" class="block mt-1 text-xs text-red-600 hover:text-red-800">Retirer</button>' +
                                     '</div>' +
-                                '</li>'
-                            );
+                                '</div>';
+                            contenuPanier.appendChild(itemElement);
                         }
                     }
                     
                     // Ajouter le total
-                    $contenuPanier.append(
-                        '<li class="py-2 font-bold flex justify-between">' +
+                    var totalElement = document.createElement('div');
+                    totalElement.className = 'border-t pt-3 mt-3';
+                    totalElement.innerHTML = 
+                        '<div class="flex justify-between items-center font-bold text-lg">' +
                             '<span>Total:</span>' +
-                            '<span>' + totalPrice.toFixed(2) + ' FCFA</span>' +
-                        '</li>'
-                    );
-                    
-                    $('#proceed-to-checkout').removeClass('opacity-50 cursor-not-allowed').prop('disabled', false);
+                            '<span class="text-blue-600">' + totalPrice.toFixed(0) + ' FCFA</span>' +
+                        '</div>';
+                    contenuPanier.appendChild(totalElement);
                 }
-                
-                // Ajouter un gestionnaire pour le bouton de suppression
-                $('.remove-item').on('click', function(e) {
-                    e.stopPropagation();
-                    var idToRemove = $(this).data('id');
-                    
-                    for (var i = 0; i < panier.length; i++) {
-                        if (panier[i] && panier[i].id === idToRemove) {
-                            if (panier[i].quantity > 1) {
-                                panier[i].quantity -= 1;
-                            } else {
-                                panier.splice(i, 1);
-                            }
-                            break;
-                        }
-                    }
-                    
-                    // Sauvegarder dans localStorage
-                    localStorage.setItem('panier', JSON.stringify(panier));
-                    
-                    // Mettre à jour l'affichage
-                    updateCartDisplay();
-                });
             }
         }
+        
+        // Fonction globale pour retirer un article du panier
+        window.removeFromCart = function(productId) {
+            for (var i = 0; i < panier.length; i++) {
+                if (panier[i] && panier[i].id === productId) {
+                    panier.splice(i, 1);
+                    break;
+                }
+            }
+            localStorage.setItem('panier', JSON.stringify(panier));
+            updateCartDisplay();
+        };
+        
         $(document).on('click','#vider-panier',function(){
             panier = [];
             localStorage.removeItem('panier');
@@ -369,4 +460,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 </script>
+
+<!-- Include Footer -->
+{% include "shopping/footer.html" %}
 {%endblock%}

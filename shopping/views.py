@@ -148,6 +148,13 @@ def category_view(request, slug):
         'products': products,
     })
 
+def delete_category_view(request, slug):
+    """Vue pour supprimer une catégorie spécifique"""
+    category = get_object_or_404(Category, slug=slug)
+    category.delete()
+    messages.success(request, f'Catégorie "{category.name}" supprimée avec succès.')
+    return redirect('home')
+
 def product_list_view(request):
     """Vue pour afficher tous les produits"""
     products = Product.objects.all().order_by('-date')

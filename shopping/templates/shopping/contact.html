@@ -2,53 +2,134 @@
 {% block title %}Contactez-nous{% endblock %}
 
 {% block content %}
-<div class="max-w-3xl mx-auto px-4 py-12">
-    <h1 class="text-3xl font-bold text-gray-800 mb-6 pb-2 relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-16 after:h-1 after:bg-blue-600">Contactez-nous</h1>
+<div class="max-w-6xl mx-auto px-4 py-12">
+    <!-- Header -->
+    <div class="bg-blue-600 rounded-2xl p-12 mb-12 shadow-lg text-center">
+        <div class="flex items-center justify-center gap-3 mb-4">
+            <svg class="w-12 h-12 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <rect width="20" height="16" x="2" y="4" rx="2"/>
+                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+            </svg>
+            <h1 class="text-5xl font-black text-white">Contactez-nous</h1>
+        </div>
+        <p class="text-xl text-blue-100 leading-relaxed max-w-2xl mx-auto">Vous avez des questions ou des commentaires ? Notre équipe est là pour vous aider !</p>
+    </div>
     
-    <p class="text-lg text-gray-600 mb-8 leading-relaxed">Si vous avez des questions ou des commentaires, n'hésitez pas à nous contacter !</p>
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
+        <!-- Carte Téléphone -->
+        <div class="bg-white border-2 border-gray-200 rounded-2xl p-6 shadow-md hover:shadow-xl transition-all duration-300 hover:border-blue-600">
+            <div class="bg-blue-600 w-14 h-14 rounded-xl flex items-center justify-center mb-4">
+                <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                </svg>
+            </div>
+            <h3 class="text-xl font-black text-gray-900 mb-2">Téléphone</h3>
+            <p class="text-gray-700 font-semibold">+221 77 123 45 67</p>
+            <p class="text-sm text-gray-600 mt-1">Lun - Ven: 9h - 18h</p>
+        </div>
+        
+        <!-- Carte Email -->
+        <div class="bg-white border-2 border-gray-200 rounded-2xl p-6 shadow-md hover:shadow-xl transition-all duration-300 hover:border-green-600">
+            <div class="bg-green-600 w-14 h-14 rounded-xl flex items-center justify-center mb-4">
+                <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <rect width="20" height="16" x="2" y="4" rx="2"/>
+                    <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+                </svg>
+            </div>
+            <h3 class="text-xl font-black text-gray-900 mb-2">Email</h3>
+            <p class="text-gray-700 font-semibold break-all">contact@votreboutique.com</p>
+            <p class="text-sm text-gray-600 mt-1">Réponse sous 24h</p>
+        </div>
+        
+        <!-- Carte Adresse -->
+        <div class="bg-white border-2 border-gray-200 rounded-2xl p-6 shadow-md hover:shadow-xl transition-all duration-300 hover:border-orange-600">
+            <div class="bg-orange-600 w-14 h-14 rounded-xl flex items-center justify-center mb-4">
+                <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
+                    <circle cx="12" cy="10" r="3"/>
+                </svg>
+            </div>
+            <h3 class="text-xl font-black text-gray-900 mb-2">Adresse</h3>
+            <p class="text-gray-700 font-semibold">123 Rue du Commerce</p>
+            <p class="text-sm text-gray-600 mt-1">Dakar, Sénégal</p>
+        </div>
+    </div>
     
-    <div class="bg-gray-50 rounded-xl shadow-lg p-8">
+    <!-- Formulaire de contact -->
+    <div class="bg-white rounded-2xl shadow-lg p-10 border-2 border-gray-200">
+        <h2 class="text-3xl font-black text-gray-900 mb-6 flex items-center gap-3">
+            <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+            </svg>
+            Envoyez-nous un message
+        </h2>
+        
         <form method="post" action="{% url 'contact' %}" class="space-y-6">
             {% csrf_token %}
             
-            <div>
-                <label for="name" class="block text-gray-700 font-medium mb-2">Nom:</label>
-                <input type="text" id="name" name="name" required 
-                    class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label for="name" class="block text-gray-700 font-bold mb-3 flex items-center gap-2">
+                        <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
+                            <circle cx="12" cy="7" r="4"/>
+                        </svg>
+                        Nom complet
+                    </label>
+                    <input type="text" id="name" name="name" required placeholder="Jean Dupont"
+                        class="w-full px-5 py-4 rounded-xl border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-300">
+                </div>
+                
+                <div>
+                    <label for="email" class="block text-gray-700 font-bold mb-3 flex items-center gap-2">
+                        <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <rect width="20" height="16" x="2" y="4" rx="2"/>
+                            <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+                        </svg>
+                        Adresse email
+                    </label>
+                    <input type="email" id="email" name="email" required placeholder="jean.dupont@exemple.com"
+                        class="w-full px-5 py-4 rounded-xl border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-300">
+                </div>
             </div>
             
             <div>
-                <label for="email" class="block text-gray-700 font-medium mb-2">Email:</label>
-                <input type="email" id="email" name="email" required 
-                    class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200">
-            </div>
-            
-            <div>
-                <label for="message" class="block text-gray-700 font-medium mb-2">Message:</label>
-                <textarea id="message" name="message" rows="5" required 
-                    class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 resize-y min-h-[120px]"></textarea>
+                <label for="message" class="block text-gray-700 font-bold mb-3 flex items-center gap-2">
+                    <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                    </svg>
+                    Votre message
+                </label>
+                <textarea id="message" name="message" rows="6" required placeholder="Écrivez votre message ici..."
+                    class="w-full px-5 py-4 rounded-xl border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-300 resize-y min-h-[150px]"></textarea>
             </div>
             
             <div>
                 <button type="submit" 
-                    class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-lg shadow transition duration-300 hover:translate-y-[-2px] hover:shadow-md active:translate-y-0">
-                    Envoyer
+                    class="w-full bg-blue-600 hover:bg-blue-700 text-white font-black py-5 px-8 rounded-xl shadow-lg transition-all duration-300 hover:shadow-xl flex items-center justify-center gap-3 text-lg">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path d="m22 2-7 20-4-9-9-4Z"/>
+                        <path d="M22 2 11 13"/>
+                    </svg>
+                    <span>Envoyer le message</span>
                 </button>
             </div>
         </form>
     </div>
     
     {% if message %}
-        <div class="mt-6 bg-green-100 border-l-4 border-green-500 text-green-800 p-4 rounded animate-[fadeIn_0.5s_ease-in-out]">
-            {{ message }}
+        <div class="mt-8 bg-green-50 border-l-4 border-green-500 p-6 rounded-xl shadow-md">
+            <div class="flex items-center gap-3">
+                <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                    <path d="m9 11 3 3L22 4"/>
+                </svg>
+                <p class="text-green-800 font-bold text-lg">{{ message }}</p>
+            </div>
         </div>
     {% endif %}
 </div>
 
-<style>
-    @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(10px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
-</style>
+<!-- Include Footer -->
+{% include "shopping/footer.html" %}
 {% endblock %}

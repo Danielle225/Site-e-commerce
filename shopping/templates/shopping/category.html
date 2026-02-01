@@ -5,77 +5,118 @@
 
 {% block content %}
 <div class="container mx-auto px-4 py-8">
-    <h2 class="text-2xl font-bold tracking-tight text-gray-900 mb-6">{{ category.name }}</h2>
-    
-    {% if category.description %}
-    <div class="bg-gray-50 p-4 rounded-lg mb-8">
-        <p class="text-sm text-gray-500">{{ category.description }}</p>
+    <!-- Header de la catégorie -->
+    <div class="bg-blue-600 rounded-3xl p-8 mb-10 shadow-2xl">
+        <div class="flex items-center gap-4 mb-3">
+            <svg class="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M3 1a1 1 0 000 2h1.22l.305 1.222a.997.997 0 00.01.042l1.358 5.43-.893.892C3.74 11.846 4.632 14 6.414 14H15a1 1 0 000-2H6.414l1-1H14a1 1 0 00.894-.553l3-6A1 1 0 0017 3H6.28l-.31-1.243A1 1 0 005 1H3zM16 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM6.5 18a1.5 1.5 0 100-3 1.5 1.5 0 000 3z"/>
+            </svg>
+            <h2 class="text-4xl font-black tracking-tight text-white">{{ category.name }}</h2>
+        </div>
+        
+        {% if category.description %}
+        <p class="text-white text-lg leading-relaxed">{{ category.description }}</p>
+        {% endif %}
     </div>
-    {% endif %}
     
-    <div class="flex flex-wrap -mx-4 snap-x justify-between">
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
         {% for product in products %}
-        <div class="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition m-4">
+        <div class="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 overflow-hidden border-2 border-gray-200 group">
             {% if product.image_url %}
-            <img src="{{ product.image_url }}" alt="{{ product.name }}" class="max-w-xs h-auto object-cover object-center mb-4 rounded-lg" />
+            <div class="relative overflow-hidden h-64">
+                <img src="{{ product.image_url }}" alt="{{ product.name }}" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500" />
+                <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <div class="absolute top-4 right-4 bg-green-600 text-white px-3 py-1 rounded-full text-xs font-bold shadow-lg">
+                    En stock
+                </div>
+            </div>
             {% else %}
-            <div class="bg-gray-200 max-w-xs h-48 flex items-center justify-center rounded-lg mb-4">
-                <span class="text-gray-500">Pas d'image</span>
+            <div class="bg-gradient-to-br from-gray-200 to-gray-300 h-64 flex items-center justify-center">
+                <svg class="w-20 h-20 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd"/>
+                </svg>
             </div>
             {% endif %}
             
-            <div class="mt-4">
-                <h3 class="text-sm font-semibold text-gray-800">
-                    <a href="#">
-                        {{ product.name }}
-                    </a>
+            <div class="p-5">
+                <h3 class="text-lg font-bold text-gray-900 mb-2 truncate group-hover:text-blue-600 transition-colors">
+                    {{ product.name }}
                 </h3>
-                <p class="text-sm text-gray-500">{{ product.description|truncatewords:10 }}</p>
-                <p class="text-sm font-medium text-gray-900 mt-1">{{ product.price }} FCFA</p>
-            </div>
+                <p class="text-sm text-gray-600 mb-4 line-clamp-2">{{ product.description|truncatewords:10 }}</p>
+                
+                <div class="flex items-center justify-between mb-5">
+                    <p class="text-2xl font-black text-blue-600">{{ product.price }} <span class="text-sm">FCFA</span></p>
+                    <div class="flex items-center gap-1 text-yellow-400">
+                        <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                        <span class="text-xs font-bold text-gray-700">4.5</span>
+                    </div>
+                </div>
             
-            <div class="mt-4 flex space-x-2">
-                <a href="{% url 'product_detail_by_category' category.slug product.id %}" class="text-center bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md text-sm font-medium">
-                    Voir Détails
-                </a>
-                <button id="{{ product.pk }}" data-name="{{ product.name }}" data-price="{{ product.price }}" class="ted bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-md text-sm font-medium">
-                    Ajouter au Panier
-                </button>
+                <div class="flex gap-2">
+                    <a href="{% url 'product_detail_by_category' category.slug product.id %}" class="flex-1 text-center bg-blue-600 hover:bg-blue-700 text-white py-3 px-4 rounded-xl text-sm font-bold transition-all duration-300 shadow-lg flex items-center justify-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                        </svg>
+                        <span>Détails</span>
+                    </a>
+                    <button id="{{ product.pk }}" data-name="{{ product.name }}" data-price="{{ product.price }}" class="ted bg-green-600 hover:bg-green-700 text-white py-3 px-4 rounded-xl text-sm font-bold transition-all duration-300 shadow-lg flex items-center justify-center">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M3 1a1 1 0 000 2h1.22l.305 1.222a.997.997 0 00.01.042l1.358 5.43-.893.892C3.74 11.846 4.632 14 6.414 14H15a1 1 0 000-2H6.414l1-1H14a1 1 0 00.894-.553l3-6A1 1 0 0017 3H6.28l-.31-1.243A1 1 0 005 1H3zM16 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM6.5 18a1.5 1.5 0 100-3 1.5 1.5 0 000 3z"/>
+                        </svg>
+                    </button>
+                </div>
             </div>
         </div>
         {% empty %}
-        <div class="w-full text-center py-10">
-            <p class="text-gray-500 text-lg">Aucun produit trouvé dans cette catégorie.</p>
+        <div class="col-span-full text-center py-16">
+            <svg class="w-24 h-24 mx-auto text-gray-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"/>
+            </svg>
+            <p class="text-gray-500 text-xl font-bold">Aucun produit trouvé dans cette catégorie.</p>
+            <a href="{% url 'index' %}" class="inline-block mt-6 bg-blue-600 text-white font-bold py-3 px-8 rounded-xl hover:bg-blue-700 transition-all duration-300 shadow-lg">
+                Retour à la boutique
+            </a>
         </div>
         {% endfor %}
     </div>
 </div>
 
-<!-- Pagination -->
-<div class="flex justify-center mt-6">
-    <ul class="pagination flex space-x-2">
+<!-- Pagination améliorée -->
+<div class="flex justify-center mt-10 mb-8">
+    <nav class="flex items-center gap-2" aria-label="Pagination">
         {% if products.has_previous %}
-            <li>
-                <a class="bg-gray-300 hover:bg-gray-400 text-gray-700 px-3 py-1 rounded" href="?page=1">Premier</a>
-            </li>
-            <li>
-                <a class="bg-gray-300 hover:bg-gray-400 text-gray-700 px-3 py-1 rounded" href="?page={{ products.previous_page_number }}">Précédent</a>
-            </li>
+            <a class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-5 py-2.5 rounded-xl transition-all duration-300 shadow-lg flex items-center gap-2" href="?page=1">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 19l-7-7 7-7m8 14l-7-7 7-7"/>
+                </svg>
+                <span>Premier</span>
+            </a>
+            <a class="bg-white hover:bg-gray-50 border-2 border-blue-600 text-blue-600 font-bold px-4 py-2.5 rounded-xl transition-all duration-300 shadow-lg" href="?page={{ products.previous_page_number }}">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                </svg>
+            </a>
         {% endif %}
 
-        <li class="bg-blue-500 text-white px-3 py-1 rounded">
-            Page {{ products.number }} sur {{ products.paginator.num_pages }}
-        </li>
+        <span class="bg-blue-600 text-white font-bold px-6 py-2.5 rounded-xl shadow-lg">
+            Page {{ products.number }} / {{ products.paginator.num_pages }}
+        </span>
 
         {% if products.has_next %}
-            <li>
-                <a class="bg-gray-300 hover:bg-gray-400 text-gray-700 px-3 py-1 rounded" href="?page={{ products.next_page_number }}">Suivant</a>
-            </li>
-            <li>
-                <a class="bg-gray-300 hover:bg-gray-400 text-gray-700 px-3 py-1 rounded" href="?page={{ products.paginator.num_pages }}">Dernier</a>
-            </li>
+            <a class="bg-white hover:bg-gray-50 border-2 border-blue-600 text-blue-600 font-bold px-4 py-2.5 rounded-xl transition-all duration-300 shadow-lg" href="?page={{ products.next_page_number }}">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                </svg>
+            </a>
+            <a class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-5 py-2.5 rounded-xl transition-all duration-300 shadow-lg flex items-center gap-2" href="?page={{ products.paginator.num_pages }}">
+                <span>Dernier</span>
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7"/>
+                </svg>
+            </a>
         {% endif %}
-    </ul>
+    </nav>
 </div>
 {% endblock %}
 
@@ -195,4 +236,7 @@
         }
     });
 </script>
+
+<!-- Include Footer -->
+{% include "shopping/footer.html" %}
 {% endblock %}

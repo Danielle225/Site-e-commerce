@@ -3,148 +3,409 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <link href="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css" rel="stylesheet" />
-    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Transit_shop</title>
+    <title>{% block title %}Transit Shop - Votre boutique en ligne{% endblock %}</title>
+    
+    <!-- Tailwind CSS Play CDN (solution de secours complète) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- CSS personnalisé -->
+    <style>
+        .nav-link {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: #2563eb;
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+        .nav-link:hover::after {
+            width: 100%;
+        }
+    </style>
+    
+    <!-- Flowbite CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css" rel="stylesheet" />
+    
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    
+    <!-- Flowbite JS -->
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
 </head>
-<body>
-    <nav class="bg-white border-b border-gray-200 shadow-sm sticky top-0 z-50 dark:bg-gray-900 dark:border-gray-700">
-        <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-            <a href="{%url 'home'%}" class="flex items-center space-x-3 rtl:space-x-reverse">
-                <img src="{% static 'images/TransitShop.png' %}" class="h-12 transition-transform duration-300 hover:scale-105" alt="TransitShop" />
-            </a>
-            <button data-collapse-toggle="navbar-dropdown" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="navbar-dropdown" aria-expanded="false">
-                <span class="sr-only">Ouvrir le menu</span>
-                <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15"/>
-                </svg>
-            </button>
-            <div class="hidden w-full md:block md:w-auto" id="navbar-dropdown">
-                <ul class="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
-                    <li>
-                        <a href="{%url 'home'%}" class="block py-2 px-3 text-white bg-blue-700 rounded-md md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500 dark:bg-blue-600 md:dark:bg-transparent relative group" aria-current="page">
-                            Accueil
-                            <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-700 group-hover:w-full transition-all duration-300 md:block hidden"></span>
-                        </a>
-                    </li>
-                    <li>
-                        <button id="dropdownNavbarLink" data-dropdown-toggle="dropdownNavbar" class="flex items-center justify-between w-full py-2 px-3 text-gray-900 rounded-md hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 md:w-auto dark:text-white md:dark:hover:text-blue-500 dark:focus:text-blue dark:border-gray-700 dark:hover:bg-gray-700 md:dark:hover:bg-transparent relative group">
-                            Categories 
-                            <svg class="w-2.5 h-2.5 ms-2.5 transition-transform duration-200 group-hover:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+<body class="bg-gray-50">
+    <!-- Navbar moderne et simple -->
+    <nav class="bg-white border-b border-gray-200 shadow-sm sticky top-0 z-50">
+        <div class="max-w-screen-xl mx-auto px-4 py-3">
+            <div class="flex items-center justify-between">
+                <!-- Logo -->
+                <a href="{%url 'home'%}" class="flex items-center transition-transform hover:scale-105">
+                    <img src="{% static 'images/TransitShop.png' %}" class="h-12" alt="TransitShop" />
+                </a>
+                
+                <!-- Desktop Navigation -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="{%url 'home'%}" class="nav-link text-gray-700 hover:text-blue-600 font-medium py-2">
+                        Accueil
+                    </a>
+                    
+                    <div class="relative group">
+                        <button class="nav-link text-gray-700 hover:text-blue-600 font-medium py-2 flex items-center gap-1">
+                            Catégories
+                            <svg class="w-4 h-4 transition-transform group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                             </svg>
-                            <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-700 group-hover:w-full transition-all duration-300 md:block hidden"></span>
                         </button>
-                        <!-- Dropdown menu -->
-                        <div id="dropdownNavbar" class="z-10 hidden font-normal bg-white divide-y divide-gray-100 rounded-lg shadow-lg w-44 dark:bg-gray-700 dark:divide-gray-600">
-                            <ul class="py-2 text-sm text-gray-700 dark:text-gray-400" aria-labelledby="dropdownLargeButton">
-                                {% for category in categories|slice:":3" %}
-                                <li>
-                                    <a href="{% url 'category' slug=category.slug %}" class="block px-4 py-2 hover:bg-gray-100 hover:text-blue-700 transition-colors duration-200 dark:hover:bg-gray-600 dark:hover:text-white">{{ category.name }}</a>
-                                </li>
-                                {% endfor %}
-                            </ul>
-                            {% if categories|length > 3 %}
-                            <div class="py-1">
-                                {% for category in categories|slice:"3:" %}
-                                <a href="{% url 'category' slug=category.slug %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-blue-700 transition-colors duration-200 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">{{ category.name }}</a>
+                        <!-- Dropdown -->
+                        <div class="absolute left-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+                            <div class="py-2">
+                                {% for category in categories %}
+                                <a href="{% url 'category' slug=category.slug %}" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors">
+                                    {{ category.name }}
+                                </a>
                                 {% endfor %}
                             </div>
-                            {% endif %}
                         </div>
-                    </li>
-                    <li>
-                        <button id="panier" data-popover-target="popover-panier" data-popover-placement="bottom" type="button" class="flex items-center py-2 px-3 text-gray-900 rounded-md hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent relative group">
-                            <!-- Icône de panier avec animation -->
-                            <svg class="w-5 h-5 mr-1 transition-transform duration-300 group-hover:scale-110" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 20">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 15a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm0 0h8m-8 0-1-4m9 4a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm-9-4h10l2-7H3m2 7L3 4m0 0-.792-3H1"/>
-                            </svg>
-                            Panier(<span id="cart-count" class="font-medium">0</span>)
-                            <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-700 group-hover:w-full transition-all duration-300 md:block hidden"></span>
-                        </button>
-                        
-                        <!-- Popover du panier amélioré -->
-                        <div data-popover id="popover-panier" role="tooltip" class="absolute z-10 invisible inline-block w-72 text-sm text-gray-500 transition-opacity duration-300 bg-white border border-gray-200 rounded-lg shadow-lg opacity-0 dark:text-gray-400 dark:border-gray-600 dark:bg-gray-800">
-                            <div class="px-3 py-2 bg-gray-100 border-b border-gray-200 rounded-t-lg dark:border-gray-600 dark:bg-gray-700">
-                                <div class="flex justify-between items-center">
-                                    <h3 class="font-semibold text-gray-900 dark:text-white">Détails du panier</h3>
-                                    <span id="panier-badge" class="bg-blue-100 text-blue-800 text-xs font-medium px-2 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300">0 article(s)</span>
-                                </div>
-                            </div>
-                            <ul id="contenu-panier" class="p-2 max-h-64 overflow-y-auto"></ul>
-                            <div class="p-2 space-y-2">
-                                <button id="proceed-to-checkout" class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-md text-sm px-5 py-2.5 text-center transition-colors duration-200 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                    Passer à la commande
-                                </button>
-                                <button id="vider-panier" onclick="viderPanierNow()" class="w-full text-gray-800 bg-gray-200 hover:bg-gray-300 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-md text-sm px-5 py-2.5 text-center transition-colors duration-200 dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:text-white">
-                                    Vider le panier
-                                </button>
-                            </div>
-                        </div>
-                    </li>
-                    <li>
-                        <a href="{%url 'contact' %}" class="block py-2 px-3 text-gray-900 rounded-md hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent relative group">
-                            Contact
-                            <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-700 group-hover:w-full transition-all duration-300 md:block hidden"></span>
+                    </div>
+                    
+                    <a href="{%url 'contact' %}" class="nav-link text-gray-700 hover:text-blue-600 font-medium py-2">
+                        Contact
+                    </a>
+                    
+                    <!-- Panier -->
+                    <button id="panier" class="relative flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
+                        </svg>
+                        <span>Panier</span>
+                        <span id="cart-count" class="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">0</span>
+                    </button>
+                </div>
+                
+                <!-- Mobile Menu Button -->
+                <button data-collapse-toggle="navbar-mobile" type="button" class="md:hidden p-2 text-gray-700 rounded-lg hover:bg-gray-100">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                </button>
+            </div>
+            
+            <!-- Mobile Navigation -->
+            <div id="navbar-mobile" class="hidden md:hidden mt-4 pb-3 border-t border-gray-200">
+                <div class="flex flex-col space-y-2 pt-3">
+                    <a href="{%url 'home'%}" class="px-3 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg font-medium transition-colors">
+                        Accueil
+                    </a>
+                    
+                    <button id="mobile-categories-toggle" class="flex items-center justify-between px-3 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg font-medium transition-colors">
+                        <span>Catégories</span>
+                        <svg class="w-4 h-4 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+                    <div id="mobile-categories" class="hidden pl-6 space-y-1">
+                        {% for category in categories %}
+                        <a href="{% url 'category' slug=category.slug %}" class="block px-3 py-2 text-gray-600 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-colors">
+                            {{ category.name }}
                         </a>
-                    </li>
-                </ul>
+                        {% endfor %}
+                    </div>
+                    
+                    <a href="{%url 'contact' %}" class="px-3 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg font-medium transition-colors">
+                        Contact
+                    </a>
+                    
+                    <button id="panier-mobile" class="flex items-center justify-between px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium">
+                        <div class="flex items-center gap-2">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
+                            </svg>
+                            <span>Mon Panier</span>
+                        </div>
+                        <span id="cart-count-mobile" class="bg-white text-blue-600 text-xs font-bold px-2 py-1 rounded-full">0</span>
+                    </button>
+                </div>
             </div>
         </div>
     </nav>
-  
+    
+    <!-- Modal Panier -->
+    <div id="cart-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl shadow-2xl max-w-md w-full max-h-[90vh] flex flex-col">
+            <!-- Header -->
+            <div class="flex items-center justify-between p-4 border-b border-gray-200">
+                <h3 class="text-lg font-bold text-gray-900 flex items-center gap-2">
+                    <svg class="w-5 h-5 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M3 1a1 1 0 000 2h1.22l.305 1.222a.997.997 0 00.01.042l1.358 5.43-.893.892C3.74 11.846 4.632 14 6.414 14H15a1 1 0 000-2H6.414l1-1H14a1 1 0 00.894-.553l3-6A1 1 0 0017 3H6.28l-.31-1.243A1 1 0 005 1H3zM16 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM6.5 18a1.5 1.5 0 100-3 1.5 1.5 0 000 3z"/>
+                    </svg>
+                    Mon Panier
+                </h3>
+                <button id="close-cart" class="text-gray-400 hover:text-gray-600">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+            
+            <!-- Content -->
+            <div id="contenu-panier" class="flex-1 overflow-y-auto p-4"></div>
+            
+            <!-- Footer -->
+            <div class="p-4 border-t border-gray-200 space-y-2">
+                <button id="proceed-to-checkout" class="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-colors font-medium flex items-center justify-center gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+                    </svg>
+                    <span>Passer à la commande</span>
+                </button>
+                <button id="vider-panier" onclick="viderPanierNow()" class="w-full bg-gray-100 text-gray-700 py-2.5 rounded-lg hover:bg-gray-200 transition-colors font-medium flex items-center justify-center gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                    </svg>
+                    <span>Vider le panier</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
     {% block content %}
     {% endblock %}
 
     <!-- Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
     <script>
-        // Fonction pour animer l'ouverture/fermeture du menu mobile
         document.addEventListener('DOMContentLoaded', function() {
-            const hamburger = document.querySelector('[data-collapse-toggle="navbar-dropdown"]');
-            const menu = document.getElementById('navbar-dropdown');
+            const cartModal = document.getElementById('cart-modal');
+            const panierBtn = document.getElementById('panier');
+            const panierMobileBtn = document.getElementById('panier-mobile');
+            const closeCartBtn = document.getElementById('close-cart');
+            const mobileMenuBtn = document.querySelector('[data-collapse-toggle="navbar-mobile"]');
+            const mobileMenu = document.getElementById('navbar-mobile');
+            const mobileCategoriesToggle = document.getElementById('mobile-categories-toggle');
+            const mobileCategories = document.getElementById('mobile-categories');
             
-            if (hamburger) {
-                hamburger.addEventListener('click', function() {
-                    // Toggle animation classes
-                    const isExpanded = hamburger.getAttribute('aria-expanded') === 'true';
-                    hamburger.setAttribute('aria-expanded', !isExpanded);
+            // Toggle mobile menu
+            if (mobileMenuBtn && mobileMenu) {
+                mobileMenuBtn.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('hidden');
                 });
             }
             
-            // Mettre à jour le compteur du panier (exemple)
-            function updateCartCount() {
-                const cartItems = JSON.parse(localStorage.getItem('panier')) || [];
-                const count = cartItems.length;
-                document.getElementById('cart-count').textContent = count;
-                document.getElementById('panier-badge').textContent = count + ' article(s)';
+            // Toggle mobile categories
+            if (mobileCategoriesToggle && mobileCategories) {
+                mobileCategoriesToggle.addEventListener('click', () => {
+                    mobileCategories.classList.toggle('hidden');
+                    const svg = mobileCategoriesToggle.querySelector('svg');
+                    svg.classList.toggle('rotate-180');
+                });
             }
             
-            // Appel initial pour mettre à jour le compteur
-            updateCartCount();
+            // Open cart modal
+            if (panierBtn) {
+                panierBtn.addEventListener('click', () => {
+                    cartModal.classList.remove('hidden');
+                    updateCartDisplay();
+                });
+            }
+            
+            if (panierMobileBtn) {
+                panierMobileBtn.addEventListener('click', () => {
+                    cartModal.classList.remove('hidden');
+                    updateCartDisplay();
+                });
+            }
+            
+            // Close cart modal
+            if (closeCartBtn) {
+                closeCartBtn.addEventListener('click', () => {
+                    cartModal.classList.add('hidden');
+                });
+            }
+            
+            // Close modal on outside click
+            cartModal.addEventListener('click', (e) => {
+                if (e.target === cartModal) {
+                    cartModal.classList.add('hidden');
+                }
+            });
+            
+            // Update cart count
+            function updateCartCount() {
+                let cartItems = [];
+                try {
+                    const stored = localStorage.getItem('panier');
+                    if (stored) {
+                        cartItems = JSON.parse(stored);
+                        if (!Array.isArray(cartItems)) {
+                            cartItems = [];
+                        }
+                    }
+                } catch (e) {
+                    console.error('Erreur panier:', e);
+                    cartItems = [];
+                }
+                
+                let totalItems = 0;
+                for (let i = 0; i < cartItems.length; i++) {
+                    if (cartItems[i] && typeof cartItems[i].quantity === 'number') {
+                        totalItems += cartItems[i].quantity;
+                    }
+                }
+                
+                document.getElementById('cart-count').textContent = totalItems;
+                const cartCountMobile = document.getElementById('cart-count-mobile');
+                if (cartCountMobile) {
+                    cartCountMobile.textContent = totalItems;
+                }
+            }
+            
+            // Update cart display in modal
+            function updateCartDisplay() {
+                let cartItems = [];
+                try {
+                    const stored = localStorage.getItem('panier');
+                    if (stored) {
+                        cartItems = JSON.parse(stored);
+                        if (!Array.isArray(cartItems)) {
+                            cartItems = [];
+                        }
+                    }
+                } catch (e) {
+                    console.error('Erreur panier:', e);
+                    cartItems = [];
+                }
+                
+                let totalItems = 0;
+                let totalPrice = 0;
+                
+                for (let i = 0; i < cartItems.length; i++) {
+                    const item = cartItems[i];
+                    if (item && typeof item.quantity === 'number' && typeof item.price === 'number') {
+                        totalItems += item.quantity;
+                        totalPrice += item.price * item.quantity;
+                    }
+                }
+                
+                // Update counters
+                document.getElementById('cart-count').textContent = totalItems;
+                const cartCountMobile = document.getElementById('cart-count-mobile');
+                if (cartCountMobile) {
+                    cartCountMobile.textContent = totalItems;
+                }
+                
+                // Update cart content
+                const contenuPanier = document.getElementById('contenu-panier');
+                if (contenuPanier) {
+                    contenuPanier.innerHTML = '';
+                    
+                    if (cartItems.length === 0) {
+                        contenuPanier.innerHTML = '<div class="text-center py-8"><svg class="w-16 h-16 mx-auto text-gray-300 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg><p class="text-gray-500 font-semibold">Votre panier est vide</p></div>';
+                        const checkoutBtn = document.getElementById('proceed-to-checkout');
+                        if (checkoutBtn) {
+                            checkoutBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                            checkoutBtn.disabled = true;
+                        }
+                    } else {
+                        for (let i = 0; i < cartItems.length; i++) {
+                            const item = cartItems[i];
+                            if (item && item.id && item.name && typeof item.price === 'number' && typeof item.quantity === 'number') {
+                                const itemElement = document.createElement('div');
+                                itemElement.className = 'bg-gray-50 rounded-lg p-3 mb-2 border border-gray-200';
+                                itemElement.innerHTML = `
+                                    <div class="flex justify-between items-start">
+                                        <div class="flex-1">
+                                            <span class="font-bold text-gray-900 block mb-1">${item.name}</span>
+                                            <span class="text-sm text-gray-600">${item.price} FCFA x ${item.quantity}</span>
+                                        </div>
+                                        <div class="text-right">
+                                            <span class="font-bold text-blue-600">${(item.price * item.quantity).toFixed(0)} FCFA</span>
+                                            <button onclick="removeFromCart('${item.id}')" class="block mt-1 text-xs text-red-600 hover:text-red-800">Retirer</button>
+                                        </div>
+                                    </div>
+                                `;
+                                contenuPanier.appendChild(itemElement);
+                            }
+                        }
+                        
+                        // Add total
+                        const totalElement = document.createElement('div');
+                        totalElement.className = 'border-t pt-3 mt-3';
+                        totalElement.innerHTML = `
+                            <div class="flex justify-between items-center font-bold text-lg">
+                                <span>Total:</span>
+                                <span class="text-blue-600">${totalPrice.toFixed(0)} FCFA</span>
+                            </div>
+                        `;
+                        contenuPanier.appendChild(totalElement);
+                        
+                        const checkoutBtn = document.getElementById('proceed-to-checkout');
+                        if (checkoutBtn) {
+                            checkoutBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                            checkoutBtn.disabled = false;
+                        }
+                    }
+                }
+            }
+            
+            // Remove item from cart
+            window.removeFromCart = function(productId) {
+                let cartItems = [];
+                try {
+                    const stored = localStorage.getItem('panier');
+                    if (stored) {
+                        cartItems = JSON.parse(stored);
+                    }
+                } catch (e) {
+                    cartItems = [];
+                }
+                
+                const newCart = cartItems.filter(item => item.id !== productId);
+                localStorage.setItem('panier', JSON.stringify(newCart));
+                updateCartDisplay();
+            };
+            
+            // Checkout button
+            const checkoutBtn = document.getElementById('proceed-to-checkout');
+            if (checkoutBtn) {
+                checkoutBtn.addEventListener('click', () => {
+                    window.location.href = '/checkout';
+                });
+            }
+            
+            // Initial update
+            updateCartDisplay();
         });
         
-        // Fonction pour vider le panier
+        // Clear cart function
         function viderPanierNow() {
             localStorage.removeItem('panier');
-            
-            // Réinitialiser la variable panier si elle existe dans la portée
             window.panier = [];
             
-            // Mettre à jour l'affichage
             document.getElementById('cart-count').textContent = '0';
-            document.getElementById('panier-badge').textContent = '0 article(s)';
-            document.getElementById('contenu-panier').innerHTML = '';
+            const cartCountMobile = document.getElementById('cart-count-mobile');
+            if (cartCountMobile) {
+                cartCountMobile.textContent = '0';
+            }
+            document.getElementById('contenu-panier').innerHTML = '<p class="text-center text-gray-500 py-8">Votre panier est vide</p>';
             
-            // Notification (si SweetAlert est disponible)
             if (typeof Swal !== 'undefined') {
                 Swal.fire({
                     icon: 'info',
-                    title: 'Votre panier a été vidé',
-                    text: 'Il ne contient plus aucun produit.',
-                    confirmButtonText: 'OK'
+                    title: 'Panier vidé',
+                    text: 'Votre panier a été vidé avec succès',
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: '#2563eb'
                 });
             }
         }

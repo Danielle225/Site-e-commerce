@@ -1,27 +1,114 @@
 <!-- payment_success.html -->
 {% extends "shopping/navbar.html" %}
 {% block content %}
-<div class="container mx-auto p-4">
-    <div class="bg-white rounded-lg shadow-md p-6 w-full max-w-lg mx-auto text-center">
-        <div class="mb-6">
-            <div class="bg-green-100 p-4 rounded-full w-20 h-20 flex items-center justify-center mx-auto">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                </svg>
+<div class="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 p-4">
+    <div class="container mx-auto max-w-2xl py-12">
+        <!-- Success Card -->
+        <div class="bg-white rounded-2xl shadow-xl border border-green-100 overflow-hidden">
+            <!-- Header with gradient -->
+            <div class="bg-gradient-to-r from-green-500 to-emerald-600 px-8 py-12 text-center">
+                <div class="flex justify-center mb-6">
+                    <div class="relative">
+                        <div class="absolute inset-0 bg-green-400 rounded-full animate-pulse opacity-25"></div>
+                        <div class="relative bg-white rounded-full p-4 flex items-center justify-center w-24 h-24">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+                <h1 class="text-4xl font-bold text-white mb-2">Paiement réussi !</h1>
+                <p class="text-green-50 text-lg">Votre commande a été confirmée avec succès</p>
             </div>
-            <h1 class="text-2xl font-bold mt-4">Paiement réussi !</h1>
-            <p class="text-gray-600 mt-2">Votre commande #{{ commande.id }} a été confirmée et est en cours de traitement.</p>
+
+            <!-- Content Section -->
+            <div class="px-8 py-10 space-y-8">
+                <!-- Order Reference -->
+                <div class="bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-6">
+                    <p class="text-sm text-gray-600 mb-2">Numéro de commande</p>
+                    <div class="flex items-center justify-between">
+                        <p class="text-3xl font-bold text-blue-600">#{{ commande.id }}</p>
+                        <div class="hidden sm:block">
+                            <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
+                                <svg class="w-2 h-2 mr-1.5 fill-current" viewBox="0 0 8 8">
+                                    <circle cx="4" cy="4" r="3"/>
+                                </svg>
+                                Confirmée
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Order Details Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <!-- Amount -->
+                    <div class="bg-gradient-to-br from-orange-50 to-red-50 border border-orange-200 rounded-xl p-6 text-center">
+                        <p class="text-sm text-gray-600 mb-2">Montant payé</p>
+                        <p class="text-2xl font-bold text-orange-600">{{ commande.total|floatformat:2 }} FCFA</p>
+                    </div>
+
+                    <!-- Date -->
+                    <div class="bg-gradient-to-br from-purple-50 to-pink-50 border border-purple-200 rounded-xl p-6 text-center">
+                        <p class="text-sm text-gray-600 mb-2">Date de commande</p>
+                        <p class="text-lg font-semibold text-gray-900">{{ commande.date|date:"d/m/Y" }}</p>
+                    </div>
+
+                    <!-- Status -->
+                    <div class="bg-gradient-to-br from-cyan-50 to-blue-50 border border-cyan-200 rounded-xl p-6 text-center">
+                        <p class="text-sm text-gray-600 mb-2">Statut</p>
+                        <p class="text-lg font-semibold text-cyan-600">En cours de traitement</p>
+                    </div>
+                </div>
+
+                <!-- Next Steps -->
+                <div class="bg-blue-50 border border-blue-200 rounded-xl p-6">
+                    <h3 class="font-semibold text-gray-900 mb-4 flex items-center">
+                        <svg class="w-5 h-5 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                        Prochaines étapes
+                    </h3>
+                    <ul class="space-y-3 text-sm text-gray-700">
+                        <li class="flex items-start">
+                            <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-blue-200 text-blue-700 font-semibold text-xs mr-3 flex-shrink-0 mt-0.5">1</span>
+                            <span>Vous recevrez un email de confirmation dans quelques minutes</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-blue-200 text-blue-700 font-semibold text-xs mr-3 flex-shrink-0 mt-0.5">2</span>
+                            <span>Votre commande sera préparée et expédiée sous 24 à 48h</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-blue-200 text-blue-700 font-semibold text-xs mr-3 flex-shrink-0 mt-0.5">3</span>
+                            <span>Vous recevrez un numéro de suivi pour tracker votre colis</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="flex flex-col sm:flex-row gap-4 pt-4">
+                    <a href="{% url 'home' %}" class="flex-1 inline-flex items-center justify-center bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-200 transform hover:scale-105 shadow-lg">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-3m0 0l7-4 7 4M5 9v10a1 1 0 001 1h12a1 1 0 001-1V9m-9 11l4-4m0 0l4 4m-4-4V6"/>
+                        </svg>
+                        Retour à l'accueil
+                    </a>
+                    <button onclick="window.print()" class="flex-1 inline-flex items-center justify-center bg-gray-100 hover:bg-gray-200 text-gray-800 font-semibold py-3 px-6 rounded-xl transition-all duration-200 shadow">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4H7a2 2 0 01-2-2v-4a2 2 0 012-2h10a2 2 0 012 2v4a2 2 0 01-2 2zm0 0h4a2 2 0 002-2v-2.5a2 2 0 00-2-2"/>
+                        </svg>
+                        Imprimer
+                    </button>
+                </div>
+            </div>
         </div>
-        
-        <div class="bg-gray-50 p-4 rounded-lg mb-6">
-            <p><strong>Montant:</strong> {{ commande.total|floatformat:2 }} FCFA</p>
-            <p><strong>Date:</strong> {{ commande.date }}</p>
-            <p><strong>Référence:</strong> #{{ commande.id }}</p>
+
+        <!-- Additional Info Footer -->
+        <div class="mt-8 text-center text-sm text-gray-600">
+            <p>Avez-vous des questions ? <a href="{% url 'contact' %}" class="text-blue-600 hover:text-blue-700 font-semibold">Contactez-nous</a></p>
         </div>
-        
-        <a href="{% url 'home' %}" class="bg-blue-600 hover:bg-blue-700 text-white py-2 px-6 rounded-lg transition-colors inline-block">
-            Retour à l'accueil
-        </a>
     </div>
 </div>
+
+<!-- Include Footer -->
+{% include "shopping/footer.html" %}
 {% endblock %}
